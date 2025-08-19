@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FxLens – Trade smarter in seconds</title>
+    <meta
+      name="description"
+      content="FxLens uses expert-trained AI to analyze your charts and give you a copy-and-paste signal. Build a trade plan, journal your trades, learn patterns, and read news with AI bias."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="import" href="support.html" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <style>
+      :root {
+        --bg: #0b1020;
+        --card: #11162a;
+        --muted: #98a3b3;
+        --text: #e9eef7;
+        --brand: #22d1c6;
+        --brand-2: #00bcd4;
+        --accent: #6b7cff;
+        --success: #12d18e;
+        --warning: #ffd166;
+        --danger: #ff6b6b;
+        --radius: 18px;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        --glass: rgba(255, 255, 255, 0.06);
+        --glass-border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+          Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+          "Segoe UI Emoji", "Segoe UI Symbol";
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+      .container {
+        width: 100%;
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(10px);
+        background: linear-gradient(
+          180deg,
+          rgba(11, 16, 32, 0.85),
+          rgba(11, 16, 32, 0.55)
+        );
+        border-bottom: var(--glass-border);
+      }
+      .nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 0;
+        gap: 12px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        letter-spacing: 0.3px;
+      }
+      .brand-badge {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        color: #05121a;
+        font-weight: 900;
+      }
+      .nav-links a {
+        opacity: 0.9;
+        font-weight: 600;
+        margin-left: 18px;
+        padding: 10px 14px;
+        border-radius: 12px;
+        transition: 0.2s ease;
+      }
+      .nav-links a:hover {
+        background: var(--glass);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 20px;
+        border-radius: 999px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        border: 0;
+        cursor: pointer;
+        transition: transform 0.08s ease, filter 0.2s ease;
+      }
+      .btn:hover {
+        filter: brightness(1.05);
+      }
+      .btn:active {
+        transform: translateY(1px) scale(0.99);
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        color: #041016;
+      }
+      .btn-outline {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: var(--text);
+      }
+      .hero {
+        position: relative;
+        padding: 72px 0 28px;
+        overflow: hidden;
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        align-items: center;
+        gap: 42px;
+      }
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(34, 209, 198, 0.12);
+        border: 1px solid rgba(34, 209, 198, 0.2);
+        color: #c7fff6;
+      }
+      h1 {
+        font-size: clamp(32px, 5vw, 52px);
+        line-height: 1.05;
+        margin: 16px 0 12px;
+      }
+      .lead {
+        font-size: clamp(16px, 2.2vw, 20px);
+        color: var(--muted);
+        max-width: 56ch;
+      }
+      .hero-ctas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 22px;
+      }
+      .trust {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .glass {
+        background: var(--glass);
+        border: var(--glass-border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+      .mock {
+        transform: rotate(-6deg);
+        border-radius: 28px;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55),
+          0 6px 18px rgba(0, 0, 0, 0.35);
+      }
+      .stripe {
+        position: absolute;
+        inset: -20% -20% auto -20%;
+        height: 360px;
+        z-index: -1;
+        background: radial-gradient(
+            1200px 420px at 10% 20%,
+            rgba(34, 209, 198, 0.22),
+            transparent 60%
+          ),
+          radial-gradient(
+            900px 420px at 90% 20%,
+            rgba(107, 124, 255, 0.2),
+            transparent 60%
+          );
+        filter: blur(40px);
+      }
+      .section {
+        padding: 64px 0;
+      }
+      .section-title {
+        font-size: clamp(26px, 3.4vw, 34px);
+        margin: 0 0 10px;
+      }
+      .section-sub {
+        color: var(--muted);
+        margin-bottom: 28px;
+      }
+      .features {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+      .feature {
+        padding: 18px;
+        border-radius: var(--radius);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.04),
+          rgba(255, 255, 255, 0.02)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .feature h3 {
+        margin: 8px 0 8px;
+        font-size: 18px;
+      }
+      .feature p {
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-top: 12px;
+      }
+      .step {
+        padding: 18px;
+        border-radius: var(--radius);
+        background: var(--card);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+      }
+      .step .num {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--brand), var(--accent));
+        color: #03121a;
+        font-weight: 800;
+      }
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+      }
+      .shot {
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: #0e1326;
+      }
+      .cta-band {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 26px;
+        align-items: center;
+        padding: 22px;
+      }
+      .note {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .footer {
+        padding: 32px 0 60px;
+        color: #aab6c8;
+      }
+      .footer a {
+        color: #c8d6f6;
+      }
+      .badges {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .store-badge {
+        height: 48px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.04);
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 14px;
+        gap: 10px;
+        font-weight: 700;
+      }
+      .store-badge small {
+        display: block;
+        opacity: 0.8;
+        font-weight: 600;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+      .support-link {
+        color: #c8f9ff;
+        border-bottom: 1px dashed rgba(200, 249, 255, 0.3);
+      }
+      @media (max-width: 980px) {
+        .hero-grid,
+        .cta-band {
+          grid-template-columns: 1fr;
+        }
+        .features {
+          grid-template-columns: 1fr 1fr;
+        }
+        .steps {
+          grid-template-columns: 1fr;
+        }
+        .gallery {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+        .nav-inner {
+          padding: 14px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="#top" aria-label="FxLens home">
+          <img src="fxlens_icon.png" style="width: 50px;" alt="">
+        </a>
+
+        <!-- Hamburger (mobile) -->
+        <button
+          class="nav-toggle"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M3 6h18M3 12h18M3 18h18" />
+          </svg>
+        </button>
+
+        <!-- Links -->
+        <nav class="nav-links" id="site-nav">
+          <a href="#features">Features</a>
+          <a href="#screens">Screens</a>
+          <a href="#how">How it works</a>
+          <a href="#download" class="btn btn-primary">Get the app</a>
+          <a href="support.html" class="support-link">Support</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="stripe"></div>
+        <div class="container hero-grid">
+          <div>
+            <span class="kicker">New – AI chart analysis</span>
+            <h1>Trade smarter in seconds</h1>
+            <p class="lead">
+              FxLens uses expert-trained AI to analyze your chart and give you a
+              clean, copy-and-paste signal. Build a personal trade plan, journal
+              your setups, learn patterns, and read news with an AI bias you can
+              act on.
+            </p>
+            <div class="hero-ctas">
+              <a class="btn btn-primary" href="#download">Download</a>
+              <a class="btn btn-outline" href="#how">See how it works</a>
+            </div>
+            <div class="trust">
+              <span
+                >Fast setup · Clear entries and risk · Works with your
+                routine</span
+              >
+            </div>
+          </div>
+          <div class="glass" style="padding: 16px">
+            <img class="mock" src="mockup.png" alt="FxLens app mockup" />
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="container">
+          <h2 class="section-title">
+            Everything you need to execute with confidence
+          </h2>
+          <p class="section-sub">
+            Sharper decisions, less second-guessing. FxLens fits into your
+            workflow and speeds up the boring parts.
+          </p>
+          <div class="features">
+            <div class="feature">
+              <h3>AI chart analysis</h3>
+              <p>
+                Upload your 4H and 15M screenshots. Get bias, entries, SL/TP,
+                RR, strength, and duration in seconds.
+              </p>
+            </div>
+            <div class="feature">
+              <h3>Personal trade plan</h3>
+              <p>
+                Set goals, risk limits, instruments, and session rules. Get a
+                plan you can actually follow.
+              </p>
+            </div>
+            <div class="feature">
+              <h3>News with AI bias</h3>
+              <p>
+                High-impact events explained in simple words, with directional
+                bias for linked pairs.
+              </p>
+            </div>
+            <div class="feature">
+              <h3>Learning library</h3>
+              <p>
+                Clean breakdowns of chart patterns and candlestick signals with
+                real trade context.
+              </p>
+            </div>
+            <div class="feature">
+              <h3>Trade journaling</h3>
+              <p>
+                Log setups and outcomes. Track execution quality and spot
+                patterns that move your PnL.
+              </p>
+            </div>
+            <div class="feature">
+              <h3>Spillmetrics ready</h3>
+              <p>
+                Send trades to Spillmetrics and share metrics with mentors or
+                your trading circle.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="how">
+        <div class="container">
+          <h2 class="section-title">How it works</h2>
+          <p class="section-sub">Three quick steps from chart to action.</p>
+          <div class="steps">
+            <div class="step grid-2">
+              <div class="num">1</div>
+              <div>
+                <h3>Pick instrument and upload charts</h3>
+                <p class="note">
+                  Use clear images with visible price digits for the best
+                  results.
+                </p>
+              </div>
+            </div>
+            <div class="step grid-2">
+              <div class="num">2</div>
+              <div>
+                <h3>Get a copy-and-paste analysis</h3>
+                <p class="note">
+                  Bias, entry, SL/TP, RR, strength, and duration. Ready for your
+                  plan.
+                </p>
+              </div>
+            </div>
+            <div class="step grid-2">
+              <div class="num">3</div>
+              <div>
+                <h3>Execute and journal</h3>
+                <p class="note">
+                  Stick to your rules, track outcomes, and improve with each
+                  setup.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="screens">
+        <div class="container">
+          <h2 class="section-title">Inside the app</h2>
+          <p class="section-sub">A quick look at the core screens.</p>
+          <div class="gallery">
+            <div class="shot">
+              <img src="screen-1.png" alt="FxLens screenshot 1" />
+            </div>
+            <div class="shot">
+              <img src="screen-2.png" alt="FxLens screenshot 2" />
+            </div>
+            <div class="shot">
+              <img src="screen-3.png" alt="FxLens screenshot 3" />
+            </div>
+            <div class="shot">
+              <img src="screen-4.png" alt="FxLens screenshot 4" />
+            </div>
+            <div class="shot">
+              <img src="screen-5.png" alt="FxLens screenshot 5" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="download">
+        <div class="container glass">
+          <div class="cta-band">
+            <div>
+              <h2 class="section-title" style="margin: 0">
+                Start trading with clarity
+              </h2>
+              <p class="section-sub" style="margin: 6px 0 16px">
+                Install FxLens and make better decisions in less time. Your edge
+                is discipline plus clear signals—get both in one place.
+              </p>
+              <div class="badges">
+                <a
+                  class="store-badge appstore"
+                  href="#"
+                  aria-label="Download on the App Store"
+                >
+                  <img
+                    src="appstore-badge.png"
+                    alt="Download on the App Store"
+                    style="width: 190px; height: 190px"
+                  />
+                </a>
+                <a
+                  class="store-badge playstore"
+                  href="#"
+                  aria-label="Get it on Google Play"
+                >
+                  <img src="playstore-badge.svg" alt="Get it on Google Play" />
+                </a>
+              </div>
+              <p class="note" style="margin-top: 10px">
+                This is not financial advice. Always do your own research and
+                consult a financial advisor before trading.
+              </p>
+            </div>
+            <div class="glass" style="padding: 10px">
+              <img
+                src="screen-2.png"
+                alt="FxLens UI preview"
+                style="border-radius: 14px"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="display: flex; align-items: center; gap: 10px">
+            <img src="fxlens_icon.png" style="width: 40px;" alt="">
+            <strong>FxLens</strong>
+          </div>
+          <div class="note">
+            © 2025 Spillcode Concepts. All rights reserved. ·
+            <a href="support.html">Support</a> ·
+            <a href="https://www.privacypolicies.com/live/fb4b5873-1a47-4c89-99e1-089fafc67a75" target="_blank" rel="noopener">Privacy</a> ·
+            <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">Terms</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Smooth scroll for same-page links
+      document.querySelectorAll('a[href^="#"]').forEach((a) => {
+        a.addEventListener("click", (e) => {
+          const id = a.getAttribute("href");
+          if (id.length > 1) {
+            e.preventDefault();
+            document
+              .querySelector(id)
+              ?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        });
+      });
+    </script>
+    <script>
+      const toggle = document.querySelector(".nav-toggle");
+      const nav = document.getElementById("site-nav");
+
+      toggle?.addEventListener("click", () => {
+        const open = nav.classList.toggle("open");
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+
+      // Close on link click (mobile)
+      nav?.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          if (nav.classList.contains("open")) {
+            nav.classList.remove("open");
+            toggle.setAttribute("aria-expanded", "false");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
