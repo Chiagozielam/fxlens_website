@@ -6,34 +6,32 @@
     <title>FxLens – Trade smarter in seconds</title>
     <meta
       name="description"
-      content="FxLens uses expert-trained AI to analyze your charts and give you a copy-and-paste signal. Build a trade plan, journal your trades, learn patterns, and read news with AI bias."
+      content="Turn chart screenshots into clear, risk-first trade plans in under 30 seconds. FxLens: AI analysis, news bias, journaling, and more."
     />
+    <meta name="theme-color" content="#0B1020" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="index.css" />
-    <link rel="import" href="support.html" />
-    <link rel="import" href="deleteAccount.html" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
     <style>
       :root {
         --bg: #0b1020;
-        --card: #11162a;
-        --muted: #98a3b3;
+        --surface: #0f162f;
+        --card: #121a36;
         --text: #e9eef7;
+        --muted: #9aa6b7;
         --brand: #22d1c6;
-        --brand-2: #00bcd4;
+        --brand2: #00bcd4;
         --accent: #6b7cff;
-        --success: #12d18e;
-        --warning: #ffd166;
-        --danger: #ff6b6b;
         --radius: 18px;
         --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
         --glass: rgba(255, 255, 255, 0.06);
-        --glass-border: 1px solid rgba(255, 255, 255, 0.12);
+        --glass-b: 1px solid rgba(255, 255, 255, 0.12);
       }
       * {
         box-sizing: border-box;
@@ -41,27 +39,104 @@
       html,
       body {
         margin: 0;
-        padding: 0;
         background: var(--bg);
         color: var(--text);
-        font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
-          Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
-          "Segoe UI Emoji", "Segoe UI Symbol";
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+          Cantarell, Helvetica Neue, Arial;
       }
       a {
-        color: inherit;
         text-decoration: none;
+        color: inherit;
       }
       img {
-        max-width: 100%;
         display: block;
+        max-width: 100%;
+        height: auto;
       }
       .container {
-        width: 100%;
-        max-width: 1120px;
+        max-width: 1160px;
         margin: 0 auto;
         padding: 0 20px;
       }
+
+      /* Ambient scene */
+      .scene {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        pointer-events: none;
+      }
+      .mesh {
+        position: absolute;
+        inset: -20% -20% auto -20%;
+        height: 72vh;
+        filter: blur(42px) saturate(120%);
+        opacity: 0.95;
+        background: radial-gradient(
+            900px 420px at 12% 18%,
+            rgba(34, 209, 198, 0.22),
+            transparent 60%
+          ),
+          radial-gradient(
+            800px 360px at 88% 10%,
+            rgba(107, 124, 255, 0.2),
+            transparent 60%
+          ),
+          radial-gradient(
+            900px 420px at 50% 115%,
+            rgba(0, 188, 212, 0.22),
+            transparent 60%
+          );
+      }
+      .gridlines {
+        position: absolute;
+        inset: 0;
+        opacity: 0.06;
+        background: linear-gradient(
+              rgba(255, 255, 255, 0.05) 1px,
+              transparent 1px
+            )
+            0 0/24px 24px,
+          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
+            0 0/24px 24px;
+      }
+      .grain {
+        position: absolute;
+        inset: 0;
+        opacity: 0.06;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+      }
+      .beam {
+        position: absolute;
+        left: -10%;
+        right: -10%;
+        top: 0;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(34, 209, 198, 0.6),
+          transparent
+        );
+        filter: blur(1px);
+        opacity: 0.6;
+        animation: sweep 8s linear infinite;
+      }
+      @keyframes sweep {
+        from {
+          transform: translateX(-30%) translateY(0);
+        }
+        to {
+          transform: translateX(30%) translateY(120vh);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .beam {
+          display: none;
+        }
+      }
+
+      /* Nav (keeps your external behaviors) */
       .nav {
         position: sticky;
         top: 0;
@@ -72,13 +147,13 @@
           rgba(11, 16, 32, 0.85),
           rgba(11, 16, 32, 0.55)
         );
-        border-bottom: var(--glass-border);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
       }
       .nav-inner {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 18px 0;
+        padding: 14px 0;
         gap: 12px;
       }
       .brand {
@@ -88,27 +163,72 @@
         font-weight: 800;
         letter-spacing: 0.3px;
       }
-      .brand-badge {
-        width: 36px;
-        height: 36px;
-        border-radius: 12px;
-        display: grid;
-        place-items: center;
-        background: linear-gradient(135deg, var(--brand), var(--brand-2));
-        color: #05121a;
-        font-weight: 900;
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 16px;
       }
       .nav-links a {
-        opacity: 0.9;
-        font-weight: 600;
-        margin-left: 18px;
-        padding: 10px 14px;
+        padding: 10px 12px;
         border-radius: 12px;
-        transition: 0.2s ease;
+        font-weight: 600;
       }
       .nav-links a:hover {
-        background: var(--glass);
+        background: rgba(255, 255, 255, 0.06);
       }
+      .nav-toggle {
+        display: none;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 10px;
+        padding: 8px 10px;
+        color: #e9eef7;
+      }
+      .nav-toggle svg {
+        width: 22px;
+        height: 22px;
+      }
+      @media (max-width: 860px) {
+        .nav {
+          padding: 0 20px;
+        }
+        .nav-toggle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .nav-links {
+          position: fixed;
+          top: 64px;
+          right: 16px;
+          left: 16px;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 8px;
+          background: rgba(13, 18, 38, 0.9);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 16px;
+          padding: 12px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+          transform: translateY(-12px);
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.18s ease, transform 0.18s ease;
+        }
+        .nav-links.open {
+          opacity: 1;
+          transform: translateY(0);
+          pointer-events: auto;
+        }
+        .nav-links a {
+          background: rgba(255, 255, 255, 0.04);
+        }
+        .nav-links a.btn-primary {
+          text-align: center;
+        }
+      }
+
+      /* Buttons */
       .btn {
         display: inline-flex;
         align-items: center;
@@ -119,6 +239,7 @@
         letter-spacing: 0.2px;
         border: 0;
         cursor: pointer;
+        position: relative;
         transition: transform 0.08s ease, filter 0.2s ease;
       }
       .btn:hover {
@@ -128,30 +249,63 @@
         transform: translateY(1px) scale(0.99);
       }
       .btn-primary {
-        background: linear-gradient(135deg, var(--brand), var(--brand-2));
         color: #041016;
+        background: linear-gradient(135deg, var(--brand), var(--brand2));
+        background-size: 200% 200%;
+        animation: gradShift 8s ease infinite;
+        box-shadow: 0 0 0 1px rgba(34, 209, 198, 0.55),
+          0 10px 30px rgba(34, 209, 198, 0.18);
       }
       .btn-outline {
         background: transparent;
         border: 1px solid rgba(255, 255, 255, 0.18);
         color: var(--text);
       }
+      .btn-ghost {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: var(--text);
+      }
+      @keyframes gradShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* Sections */
+      .section {
+        padding: 80px 0;
+      }
+      .section-title {
+        font-size: clamp(26px, 3.4vw, 36px);
+        margin: 0 0 12px;
+      }
+      .section-sub {
+        color: var(--muted);
+        margin-bottom: 28px;
+      }
+
+      /* Hero */
       .hero {
-        position: relative;
-        padding: 72px 0 28px;
-        overflow: hidden;
+        padding: 92px 0 36px;
       }
       .hero-grid {
         display: grid;
-        grid-template-columns: 1.15fr 1fr;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 44px;
         align-items: center;
-        gap: 42px;
       }
       .kicker {
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        font-size: 13px;
+        font-size: 12.5px;
         padding: 8px 12px;
         border-radius: 999px;
         background: rgba(34, 209, 198, 0.12);
@@ -159,114 +313,280 @@
         color: #c7fff6;
       }
       h1 {
-        font-size: clamp(32px, 5vw, 52px);
-        line-height: 1.05;
-        margin: 16px 0 12px;
+        font-size: clamp(36px, 5.6vw, 64px);
+        line-height: 1.03;
+        margin: 12px 0;
+      }
+      .title {
+        background: linear-gradient(90deg, #e9eef7, #9be9e3 38%, #c0c8ff 75%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
       }
       .lead {
-        font-size: clamp(16px, 2.2vw, 20px);
+        font-size: clamp(16px, 2.1vw, 20px);
         color: var(--muted);
-        max-width: 56ch;
+        max-width: 62ch;
       }
       .hero-ctas {
         display: flex;
         flex-wrap: wrap;
-        gap: 14px;
-        margin-top: 22px;
-      }
-      .trust {
-        display: flex;
-        align-items: center;
         gap: 12px;
-        margin-top: 18px;
-        color: var(--muted);
-        font-size: 14px;
+        margin-top: 20px;
       }
-      .glass {
-        background: var(--glass);
-        border: var(--glass-border);
+      .proof {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+        font-size: 13.5px;
+        color: var(--muted);
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .mockwrap {
+        position: relative;
+        padding: 16px;
         border-radius: var(--radius);
+        background: var(--glass);
+        border: var(--glass-b);
         box-shadow: var(--shadow);
+        overflow: visible;
       }
       .mock {
-        transform: rotate(-6deg);
+        width: 100%;
         border-radius: 28px;
         box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55),
           0 6px 18px rgba(0, 0, 0, 0.35);
+        transform: rotate(-3.5deg);
       }
-      .stripe {
+
+      /* Floating chips: add edge glow + readable contrast + motion */
+      .float {
         position: absolute;
-        inset: -20% -20% auto -20%;
-        height: 360px;
-        z-index: -1;
+        z-index: 2;
+        padding: 10px 14px;
+        border-radius: 14px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        background: linear-gradient(
+          180deg,
+          rgba(10, 14, 28, 0.93),
+          rgba(10, 14, 28, 0.86)
+        );
+        backdrop-filter: blur(8px) saturate(140%);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.48);
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+      }
+      /* inner glow */
+      .float::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border-radius: inherit;
+        pointer-events: none;
         background: radial-gradient(
-            1200px 420px at 10% 20%,
-            rgba(34, 209, 198, 0.22),
-            transparent 60%
-          ),
-          radial-gradient(
-            900px 420px at 90% 20%,
-            rgba(107, 124, 255, 0.2),
-            transparent 60%
-          );
-        filter: blur(40px);
+          120% 120% at 50% 50%,
+          rgba(34, 209, 198, 0.55),
+          transparent 60%
+        );
+        filter: blur(8px);
+        opacity: 0.45;
+        z-index: -1;
       }
-      .section {
-        padding: 64px 0;
+      /* outer ambient glow */
+      .float::after {
+        content: "";
+        position: absolute;
+        inset: -8px;
+        border-radius: inherit;
+        pointer-events: none;
+        background: radial-gradient(
+          100% 100% at 50% 50%,
+          rgba(34, 209, 198, 0.25),
+          transparent 60%
+        );
+        filter: blur(12px);
+        opacity: 0.55;
+        z-index: -2;
       }
-      .section-title {
-        font-size: clamp(26px, 3.4vw, 34px);
-        margin: 0 0 10px;
+      .float b {
+        color: var(--brand);
       }
-      .section-sub {
-        color: var(--muted);
-        margin-bottom: 28px;
+
+      /* placement */
+      .f1 {
+        top: -16px;
+        right: -12px;
       }
+      .f2 {
+        bottom: 18%;
+        left: -12px;
+      }
+      .f3 {
+        top: 12%;
+        left: 6%;
+      }
+
+      /* bobbing motion */
+      @keyframes bob {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-6px);
+        }
+      }
+      .f1 {
+        animation: bob 6s ease-in-out infinite;
+      }
+      .f2 {
+        animation: bob 7s ease-in-out -1s infinite;
+      }
+      .f3 {
+        animation: bob 8s ease-in-out -2s infinite;
+      }
+
+      /* ROI ticker */
+      .ticker {
+        margin: 24px 0 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .marquee {
+        display: flex;
+        gap: 40px;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      .marquee p {
+        display: inline-block;
+        padding: 12px 0;
+        margin: 0;
+        opacity: 0.9;
+      }
+      .marquee .gain {
+        color: #8ff6d1;
+      }
+      .marquee .save {
+        color: #b7c5ff;
+      }
+      .marquee-track {
+        display: inline-block;
+        padding-left: 100%;
+        animation: scroll 22s linear infinite;
+      }
+      @keyframes scroll {
+        to {
+          transform: translateX(-100%);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .marquee-track {
+          animation: none;
+        }
+      }
+
+      /* Features */
       .features {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 18px;
       }
       .feature {
+        position: relative;
         padding: 18px;
-        border-radius: var(--radius);
+        border-radius: 18px;
         background: linear-gradient(
           180deg,
-          rgba(255, 255, 255, 0.04),
+          rgba(255, 255, 255, 0.05),
           rgba(255, 255, 255, 0.02)
         );
         border: 1px solid rgba(255, 255, 255, 0.06);
+        overflow: hidden;
+      }
+      .feature::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: 20px;
+        padding: 1px;
+        background: conic-gradient(
+          from 180deg,
+          rgba(34, 209, 198, 0.5),
+          rgba(107, 124, 255, 0.5),
+          rgba(34, 209, 198, 0.5)
+        );
+        -webkit-mask: linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+      }
+      .feature:hover::before {
+        opacity: 1;
       }
       .feature h3 {
-        margin: 8px 0 8px;
+        margin: 6px 0 8px;
         font-size: 18px;
       }
       .feature p {
         color: var(--muted);
         font-size: 15px;
       }
-      .steps {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-        margin-top: 12px;
+
+      /* Timeline */
+      .timeline {
+        position: relative;
+        margin-top: 20px;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 18px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(var(--brand), var(--accent));
+        opacity: 0.5;
       }
       .step {
-        padding: 18px;
-        border-radius: var(--radius);
-        background: var(--card);
-        border: 1px solid rgba(255, 255, 255, 0.07);
+        position: relative;
+        display: grid;
+        grid-template-columns: 36px 1fr;
+        gap: 14px;
+        padding: 16px 0;
       }
-      .step .num {
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
+      .num {
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
         display: grid;
         place-items: center;
         background: linear-gradient(135deg, var(--brand), var(--accent));
         color: #03121a;
         font-weight: 800;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
       }
+      .note {
+        font-size: 13.5px;
+        color: var(--muted);
+      }
+
+      /* Screens */
       .gallery {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
@@ -277,6 +597,22 @@
         overflow: hidden;
         border: 1px solid rgba(255, 255, 255, 0.08);
         background: #0e1326;
+        transform: translateY(0);
+        transition: transform 0.25s ease, border-color 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+      .shot:hover {
+        transform: translateY(-4px);
+        border-color: rgba(34, 209, 198, 0.35);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+      }
+
+      /* CTA & badges */
+      .glass {
+        background: var(--glass);
+        border: var(--glass-b);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
       }
       .cta-band {
         display: grid;
@@ -285,78 +621,124 @@
         align-items: center;
         padding: 22px;
       }
-      .note {
-        font-size: 13px;
-        color: var(--muted);
+      .store-badge img {
+        height: 55px;
+        width: auto;
+        display: block;
+        transition: transform 0.2s ease, filter 0.2s ease;
+        margin-top: 15px;
+      }
+      .store-badge img:hover {
+        transform: scale(1.05);
+        filter: brightness(1.1);
       }
       .footer {
-        padding: 32px 0 60px;
+        padding: 40px 0 64px;
         color: #aab6c8;
       }
       .footer a {
         color: #c8d6f6;
       }
-      .badges {
-        display: flex;
-        gap: 10px;
-        align-items: center;
+
+      /* Reveal */
+      .reveal {
+        opacity: 0;
+        transform: translateY(14px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
       }
-      .store-badge {
-        height: 48px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        background: rgba(255, 255, 255, 0.04);
-        display: inline-flex;
-        align-items: center;
-        padding: 8px 14px;
-        gap: 10px;
-        font-weight: 700;
+      .reveal.is-visible {
+        opacity: 1;
+        transform: none;
       }
-      .store-badge small {
-        display: block;
-        opacity: 0.8;
-        font-weight: 600;
-      }
-      .grid-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 18px;
-      }
-      .support-link {
-        color: #c8f9ff;
-        border-bottom: 1px dashed rgba(200, 249, 255, 0.3);
-      }
-      @media (max-width: 980px) {
-        .hero-grid,
+
+      /* Responsive layout + chip positions */
+      @media (max-width: 1080px) {
+        .hero-grid {
+          grid-template-columns: 1fr;
+        }
         .cta-band {
           grid-template-columns: 1fr;
         }
         .features {
           grid-template-columns: 1fr 1fr;
         }
-        .steps {
-          grid-template-columns: 1fr;
-        }
         .gallery {
           grid-template-columns: repeat(2, 1fr);
         }
-        .grid-2 {
+        /* bring chips inside edges on tablets */
+        .f1 {
+          top: -10px;
+          right: 6px;
+        }
+        .f2 {
+          bottom: 10%;
+          left: 6px;
+        }
+        .f3 {
+          top: auto;
+          bottom: 6%;
+          left: auto;
+          right: 6%;
+        }
+      }
+      @media (max-width: 680px) {
+        .features {
           grid-template-columns: 1fr;
         }
-        .nav-inner {
-          padding: 14px 0;
+        .float {
+          font-size: 12px;
+          padding: 8px 10px;
+        }
+        .f1 {
+          top: -6px;
+          right: 6px;
+        }
+        .f2 {
+          bottom: 6%;
+          left: 6px;
+        }
+        .f3 {
+          bottom: 14%;
+          right: 50%;
+          transform: translateX(50%);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .f1,
+        .f2,
+        .f3 {
+          animation: none;
         }
       }
     </style>
   </head>
   <body>
-    <header class="nav">
+    <!-- Ambient background -->
+    <div class="scene" aria-hidden="true">
+      <div class="mesh"></div>
+      <div class="beam"></div>
+      <div class="gridlines"></div>
+      <div class="grain"></div>
+    </div>
+
+    <!-- Nav -->
+    <header class="nav" role="banner">
       <div class="container nav-inner">
         <a class="brand" href="#top" aria-label="FxLens home">
-          <img src="fxlens_icon.png" style="width: 50px;" alt="">
+          <img
+            src="fxlens_icon.png"
+            alt="FxLens"
+            style="width: 44px; height: 44px; border-radius: 12px"
+          />
+          <strong>FxLens</strong>
         </a>
-
-        <!-- Hamburger (mobile) -->
+        <nav class="nav-links" id="site-nav" aria-label="Primary">
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+          <a href="#screens">Screens</a>
+          <a href="#download" class="btn btn-primary">Get the app</a>
+          <a href="support.html">Support</a>
+        </nav>
         <button
           class="nav-toggle"
           aria-label="Toggle menu"
@@ -367,98 +749,110 @@
             fill="none"
             stroke="currentColor"
             stroke-width="2"
+            aria-hidden="true"
           >
             <path d="M3 6h18M3 12h18M3 18h18" />
           </svg>
         </button>
-
-        <!-- Links -->
-        <nav class="nav-links" id="site-nav">
-          <a href="#features">Features</a>
-          <a href="#screens">Screens</a>
-          <a href="#how">How it works</a>
-          <a href="#download" class="btn btn-primary">Get the app</a>
-          <a href="support.html" class="support-link">Support</a>
-        </nav>
       </div>
     </header>
 
     <main id="top">
+      <!-- Hero -->
       <section class="hero">
-        <div class="stripe"></div>
         <div class="container hero-grid">
-          <div>
+          <div class="reveal">
             <span class="kicker">New – AI chart analysis</span>
-            <h1>Trade smarter in seconds</h1>
+            <h1 class="title">Turn screenshots into trades you can stick to</h1>
             <p class="lead">
-              FxLens uses expert-trained AI to analyze your chart and give you a
-              clean, copy-and-paste signal. Build a personal trade plan, journal
-              your setups, learn patterns, and read news with an AI bias you can
-              act on.
+              Upload you 4H + 15M charts, get instant analysis, map a trade plan, log
+              outcomes, explore setups, and see news bias - everything you need
+              to trade faster and smarter.
             </p>
             <div class="hero-ctas">
               <a class="btn btn-primary" href="#download">Download</a>
-              <a class="btn btn-outline" href="#how">See how it works</a>
+              <a class="btn btn-ghost" href="#how">See how it works</a>
             </div>
-            <div class="trust">
-              <span
-                >Fast setup · Clear entries and risk · Works with your
-                routine</span
-              >
+            <div class="proof" aria-label="Reasons to trust FxLens">
+              <span class="chip">⏱ Prep: ~90s</span>
+              <span class="chip">🧭 Clear bias & risk</span>
+              <span class="chip">📓 Journal-ready</span>
             </div>
           </div>
-          <div class="glass" style="padding: 16px">
+
+          <div class="mockwrap reveal">
             <img class="mock" src="mockup.png" alt="FxLens app mockup" />
+            <div class="float f1"><b>Bias:</b> Bullish · <b>RR:</b> 1:2.5</div>
+            <div class="float f2">
+              <b>Entry:</b> 2387.40 · <b>SL:</b> 2378.10
+            </div>
+            <div class="float f3"><b>Time-in-trade:</b> 45–120m</div>
+          </div>
+        </div>
+
+        <div class="ticker" aria-hidden="true">
+          <div class="marquee">
+            <div class="marquee-track">
+              <p class="gain">Save ~20–45 min per setup ||</p>
+              <p class="save">Journal in 1m ||</p>
+              <p class="gain">Risk-first analysis keep you disciplined ||</p>
+              <p class="save">Bias + Entry + SL/TP in one view</p>
+            </div>
+            <div class="marquee-track" aria-hidden="true">
+              <p class="gain">Save ~20–45 min per setup ||</p>
+              <p class="save">Journal in 1 minute ||</p>
+              <p class="gain">Risk-first analysis keep you disciplined ||</p>
+              <p class="save">Bias + Entry + SL/TP in one view</p>
+            </div>
           </div>
         </div>
       </section>
 
+      <!-- Features -->
       <section class="section" id="features">
         <div class="container">
-          <h2 class="section-title">
-            Everything you need to execute with confidence
-          </h2>
+          <h2 class="section-title">Why traders stick with FxLens</h2>
           <p class="section-sub">
-            Sharper decisions, less second-guessing. FxLens fits into your
-            workflow and speeds up the boring parts.
+            Execution beats prediction. FxLens speeds up prep, clarifies risk
+            and keeps you honest.
           </p>
           <div class="features">
-            <div class="feature">
+            <div class="feature reveal">
               <h3>AI chart analysis</h3>
               <p>
                 Upload your 4H and 15M screenshots. Get bias, entries, SL/TP,
-                RR, strength, and duration in seconds.
+                RR, strength and duration in seconds.
               </p>
             </div>
-            <div class="feature">
+            <div class="feature reveal">
               <h3>Personal trade plan</h3>
               <p>
-                Set goals, risk limits, instruments, and session rules. Get a
-                plan you can actually follow.
+                Set goals, risk limits, instruments and session rules. Turn
+                discipline into a repeatable edge.
               </p>
             </div>
-            <div class="feature">
+            <div class="feature reveal">
               <h3>News with AI bias</h3>
               <p>
                 High-impact events explained in simple words, with directional
                 bias for linked pairs.
               </p>
             </div>
-            <div class="feature">
+            <div class="feature reveal">
               <h3>Learning library</h3>
               <p>
                 Clean breakdowns of chart patterns and candlestick signals with
                 real trade context.
               </p>
             </div>
-            <div class="feature">
+            <div class="feature reveal">
               <h3>Trade journaling</h3>
               <p>
                 Log setups and outcomes. Track execution quality and spot
                 patterns that move your PnL.
               </p>
             </div>
-            <div class="feature">
+            <div class="feature reveal">
               <h3>Spillmetrics ready</h3>
               <p>
                 Send trades to Spillmetrics and share metrics with mentors or
@@ -469,12 +863,13 @@
         </div>
       </section>
 
+      <!-- How it works -->
       <section class="section" id="how">
         <div class="container">
           <h2 class="section-title">How it works</h2>
           <p class="section-sub">Three quick steps from chart to action.</p>
-          <div class="steps">
-            <div class="step grid-2">
+          <div class="timeline">
+            <div class="step reveal">
               <div class="num">1</div>
               <div>
                 <h3>Pick instrument and upload charts</h3>
@@ -484,22 +879,22 @@
                 </p>
               </div>
             </div>
-            <div class="step grid-2">
+            <div class="step reveal">
               <div class="num">2</div>
               <div>
                 <h3>Get a copy-and-paste analysis</h3>
                 <p class="note">
-                  Bias, entry, SL/TP, RR, strength, and duration. Ready for your
+                  Bias, entry, SL/TP, RR, strength and duration — ready for your
                   plan.
                 </p>
               </div>
             </div>
-            <div class="step grid-2">
+            <div class="step reveal">
               <div class="num">3</div>
               <div>
                 <h3>Execute and journal</h3>
                 <p class="note">
-                  Stick to your rules, track outcomes, and improve with each
+                  Stick to your rules, track outcomes and improve with each
                   setup.
                 </p>
               </div>
@@ -508,55 +903,76 @@
         </div>
       </section>
 
+      <!-- Screens -->
       <section class="section" id="screens">
         <div class="container">
           <h2 class="section-title">Inside the app</h2>
           <p class="section-sub">A quick look at the core screens.</p>
           <div class="gallery">
-            <div class="shot">
-              <img src="screen-1.png" alt="FxLens screenshot 1" />
+            <div class="shot reveal">
+              <img
+                loading="lazy"
+                src="screen-1.png"
+                alt="FxLens screenshot 1"
+              />
             </div>
-            <div class="shot">
-              <img src="screen-2.png" alt="FxLens screenshot 2" />
+            <div class="shot reveal">
+              <img
+                loading="lazy"
+                src="screen-2.png"
+                alt="FxLens screenshot 2"
+              />
             </div>
-            <div class="shot">
-              <img src="screen-3.png" alt="FxLens screenshot 3" />
+            <div class="shot reveal">
+              <img
+                loading="lazy"
+                src="screen-3.png"
+                alt="FxLens screenshot 3"
+              />
             </div>
-            <div class="shot">
-              <img src="screen-4.png" alt="FxLens screenshot 4" />
+            <div class="shot reveal">
+              <img
+                loading="lazy"
+                src="screen-4.png"
+                alt="FxLens screenshot 4"
+              />
             </div>
-            <div class="shot">
-              <img src="screen-5.png" alt="FxLens screenshot 5" />
+            <div class="shot reveal">
+              <img
+                loading="lazy"
+                src="screen-5.png"
+                alt="FxLens screenshot 5"
+              />
             </div>
           </div>
         </div>
       </section>
 
+      <!-- CTA -->
       <section class="section" id="download">
         <div class="container glass">
           <div class="cta-band">
-            <div>
+            <div class="reveal">
               <h2 class="section-title" style="margin: 0">
                 Start trading with clarity
               </h2>
               <p class="section-sub" style="margin: 6px 0 16px">
                 Install FxLens and make better decisions in less time. Your edge
-                is discipline plus clear signals—get both in one place.
+                is discipline plus clear signals — get both in one place.
               </p>
-              <div class="badges">
+              <div class="">
                 <a
                   class="store-badge appstore"
                   href="https://apps.apple.com/ng/app/fxlens/id6748287547"
                   aria-label="Download on the App Store"
                 >
                   <img
-                    src="appstore-badge.png"
+                    src="appstore_download.png"
                     alt="Download on the App Store"
-                    style="width: 190px; height: 190px"
                   />
                 </a>
                 <a
-                  class="store-badge playstore"
+                  class="store-badge"
                   href="#"
                   aria-label="Get it on Google Play"
                 >
@@ -568,7 +984,7 @@
                 consult a financial advisor before trading.
               </p>
             </div>
-            <div class="glass" style="padding: 10px">
+            <div class="glass reveal" style="padding: 10px">
               <img
                 src="screen-2.png"
                 alt="FxLens UI preview"
@@ -592,21 +1008,36 @@
           "
         >
           <div style="display: flex; align-items: center; gap: 10px">
-            <img src="fxlens_icon.png" style="width: 40px;" alt="">
+            <img
+              src="fxlens_icon.png"
+              alt="FxLens"
+              style="width: 40px; height: 40px"
+            />
             <strong>FxLens</strong>
           </div>
           <div class="note">
             © 2025 Spillcode Concepts. All rights reserved. ·
             <a href="support.html">Support</a> ·
-            <a href="https://www.privacypolicies.com/live/fb4b5873-1a47-4c89-99e1-089fafc67a75" target="_blank" rel="noopener">Privacy</a> ·
-            <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">Terms</a>
+            <a
+              href="https://www.privacypolicies.com/live/fb4b5873-1a47-4c89-99e1-089fafc67a75"
+              target="_blank"
+              rel="noopener"
+              >Privacy</a
+            >
+            ·
+            <a
+              href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"
+              target="_blank"
+              rel="noopener"
+              >Terms</a
+            >
           </div>
         </div>
       </div>
     </footer>
 
     <script>
-      // Smooth scroll for same-page links
+      // Smooth scroll
       document.querySelectorAll('a[href^="#"]').forEach((a) => {
         a.addEventListener("click", (e) => {
           const id = a.getAttribute("href");
@@ -618,25 +1049,37 @@
           }
         });
       });
-    </script>
-    <script>
+      // Mobile nav
       const toggle = document.querySelector(".nav-toggle");
       const nav = document.getElementById("site-nav");
-
       toggle?.addEventListener("click", () => {
         const open = nav.classList.toggle("open");
         toggle.setAttribute("aria-expanded", open ? "true" : "false");
       });
-
-      // Close on link click (mobile)
-      nav?.querySelectorAll("a").forEach((link) => {
+      nav?.querySelectorAll("a").forEach((link) =>
         link.addEventListener("click", () => {
           if (nav.classList.contains("open")) {
             nav.classList.remove("open");
             toggle.setAttribute("aria-expanded", "false");
           }
-        });
-      });
+        })
+      );
+      // Reveal
+      const io =
+        "IntersectionObserver" in window
+          ? new IntersectionObserver(
+              (entries) => {
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                    io.unobserve(entry.target);
+                  }
+                });
+              },
+              { threshold: 0.12 }
+            )
+          : null;
+      document.querySelectorAll(".reveal").forEach((el) => io?.observe(el));
     </script>
   </body>
 </html>
