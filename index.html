@@ -56,6 +56,89 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
+    <!-- Structured Data: Organization -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "FxLens",
+        "url": "https://fxlens.app",
+        "logo": "https://fxlens.app/og-logo.png",
+        "brand": {
+          "@type": "Brand",
+          "name": "FxLens"
+        }
+      }
+    </script>
+
+    <!-- Structured Data: Website (with site search) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "FxLens",
+        "url": "https://fxlens.app",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://fxlens.app/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+
+    <!-- Structured Data: Mobile App (SoftwareApplication) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": ["SoftwareApplication", "MobileApplication"],
+        "name": "FxLens",
+        "alternateName": "Shazam for Trading",
+        "url": "https://fxlens.app",
+        "image": "https://fxlens.app/og-image.jpg",
+        "screenshot": [
+          "https://fxlens.app/screenshots/1.jpg",
+          "https://fxlens.app/screenshots/2.jpg",
+          "https://fxlens.app/screenshots/3.jpg"
+        ],
+        "operatingSystem": "iOS, Android",
+        "applicationCategory": "FinanceApplication",
+        "inLanguage": ["en"],
+        "isAccessibleForFree": true,
+        "offers": [
+          {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+            "category": "Free"
+          }
+        ],
+        "publisher": {
+          "@type": "Organization",
+          "name": "Spillmetrics"
+        },
+        "description": "FxLens is the Shazam for trading. Turn chart screenshots into clear, risk-first trade plans in seconds—AI analysis, news bias, journaling, and more.",
+        "keywords": [
+          "FxLens",
+          "FxLens app",
+          "Shazam for trading",
+          "trading AI",
+          "AI forex analysis",
+          "AI trade analysis",
+          "trade journaling",
+          "forex news bias",
+          "trade plan generator",
+          "forex trading app"
+        ],
+        "featureList": [
+          "Screenshot-to-trade-plan in under 30 seconds",
+          "4H + 15M multi-timeframe AI analysis",
+          "Directional bias, entry, SL/TP, and risk-reward",
+          "News bias insights and event context",
+          "Built-in journaling and performance tracking"
+        ]
+      }
+    </script>
+
     <style>
       :root {
         --bg: #0b1020;
