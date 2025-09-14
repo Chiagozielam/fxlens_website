@@ -26,7 +26,7 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://fxlens.app" />
-    <meta property="og:image" content="https://fxlens.app/og-image.jpg" />
+    <meta property="og:image" content="https://fxlens.app/fxlens_icon.png" />
     <!-- replace with actual OG image -->
 
     <!-- Twitter Card -->
@@ -39,8 +39,16 @@
       name="twitter:description"
       content="AI forex app that converts screenshots into smart trade plans. Shazam for trading, in your pocket."
     />
-    <meta name="twitter:image" content="https://fxlens.app/og-image.jpg" />
+    <meta name="twitter:image" content="https://fxlens.app/fxlens_icon.png" />
     <!-- replace with actual Twitter image -->
+
+    <!-- iOS Smart App Banner -->
+    <meta name="apple-itunes-app" content="app-id=6748287547" />
+
+    <!-- App Links (iOS) -->
+    <meta property="al:ios:app_store_id" content="6748287547" />
+    <meta property="al:ios:app_name" content="FxLens" />
+    <meta property="al:ios:url" content="fxlens://open" />
 
     <!-- Canonical -->
     <link rel="canonical" href="https://fxlens.app" />
@@ -56,22 +64,22 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
-    <!-- Structured Data: Organization -->
+    <!-- Organization -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "FxLens",
         "url": "https://fxlens.app",
-        "logo": "https://fxlens.app/og-logo.png",
-        "brand": {
-          "@type": "Brand",
-          "name": "FxLens"
-        }
+        "logo": "https://fxlens.app/fxlens_icon.png",
+        "sameAs": [
+          "https://apps.apple.com/ng/app/fxlens-save-charting-time/id6748287547"
+        ],
+        "brand": { "@type": "Brand", "name": "FxLens" }
       }
     </script>
 
-    <!-- Structured Data: Website (with site search) -->
+    <!-- Website -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -86,7 +94,7 @@
       }
     </script>
 
-    <!-- Structured Data: Mobile App (SoftwareApplication) -->
+    <!-- Mobile App / SoftwareApplication -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -94,28 +102,27 @@
         "name": "FxLens",
         "alternateName": "Shazam for Trading",
         "url": "https://fxlens.app",
-        "image": "https://fxlens.app/og-image.jpg",
+        "image": "https://fxlens.app/fxlens_icon.png",
         "screenshot": [
           "https://fxlens.app/screenshots/1.jpg",
           "https://fxlens.app/screenshots/2.jpg",
           "https://fxlens.app/screenshots/3.jpg"
         ],
-        "operatingSystem": "iOS, Android",
+        "operatingSystem": "iOS",
         "applicationCategory": "FinanceApplication",
         "inLanguage": ["en"],
         "isAccessibleForFree": true,
-        "offers": [
-          {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD",
-            "category": "Free"
-          }
-        ],
-        "publisher": {
-          "@type": "Organization",
-          "name": "Spillmetrics"
+        "downloadUrl": "https://apps.apple.com/ng/app/fxlens-save-charting-time/id6748287547",
+        "installUrl": "https://apps.apple.com/ng/app/fxlens-save-charting-time/id6748287547",
+        "offers": {
+          "@type": "Offer",
+          "url": "https://apps.apple.com/ng/app/fxlens-save-charting-time/id6748287547",
+          "price": "0",
+          "priceCurrency": "USD",
+          "category": "Free",
+          "availability": "https://schema.org/InStock"
         },
+        "publisher": { "@type": "Organization", "name": "Spillmetrics" },
         "description": "FxLens is the Shazam for trading. Turn chart screenshots into clear, risk-first trade plans in seconds—AI analysis, news bias, journaling, and more.",
         "keywords": [
           "FxLens",
@@ -135,6 +142,9 @@
           "Directional bias, entry, SL/TP, and risk-reward",
           "News bias insights and event context",
           "Built-in journaling and performance tracking"
+        ],
+        "sameAs": [
+          "https://apps.apple.com/ng/app/fxlens-save-charting-time/id6748287547"
         ]
       }
     </script>
