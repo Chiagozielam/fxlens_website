@@ -1,93 +1,38 @@
 <!doctype html>
 <html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>FxLens OAuth redirect</title>
-  <style>
-    body{font-family:system-ui,Arial,Helvetica,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
-    .wrap{max-width:520px;padding:20px;text-align:center}
-    pre{white-space:pre-wrap;background:#f6f6f6;padding:8px;border-radius:6px}
-    a.button{display:inline-block;margin-top:16px;padding:10px 14px;border-radius:8px;text-decoration:none;border:1px solid #ddd}
-  </style>
-</head>
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
 <body>
-  <div class="wrap">
-    <h3>Redirecting…</h3>
-    <div id="status">Trying to open the app. If nothing happens, use the link below.</div>
-    <div id="debug" style="margin-top:12px"></div>
-    <div id="fallback" style="margin-top:14px"></div>
-  </div>
-
+  <div id="status">Redirecting…</div>
   <script>
   (function () {
-    function parseParamsFrom(str) {
-      try {
-        const q = new URLSearchParams((str || '').replace(/^.*?[?#]/, ''));
-        const userId = q.get('userId');
-        const secret = q.get('secret');
-        const error = q.get('error');
-        return { userId, secret, error };
-      } catch (e) {
-        return { userId: null, secret: null };
-      }
-    }
-
-    // Check search, hash, and full href for params
-    const fromSearch = parseParamsFrom(window.location.search || '');
-    const fromHash = parseParamsFrom(window.location.hash || '');
-    const fromHref = parseParamsFrom(window.location.href || '');
-
-    const userId = fromSearch.userId || fromHash.userId || fromHref.userId;
-    const secret = fromSearch.secret || fromHash.secret || fromHref.secret;
-    const error = fromSearch.error || fromHash.error || fromHref.error;
-
+    const qs = new URLSearchParams(window.location.search || window.location.hash.replace('#','?') || '');
+    const userId = qs.get('userId');
+    const secret = qs.get('secret');
+    const error = qs.get('error');
+    // Primary app scheme (matches Appwrite platform and app.json)
     const APP_SCHEME = 'appwrite-callback-6854257a000c3a519205://auth';
-    // Also keep fxlens scheme fallback available:
     const ALT_SCHEME = 'fxlens://oauth';
 
-    const debug = document.getElementById('debug');
-    const status = document.getElementById('status');
-    const fallback = document.getElementById('fallback');
-
-    debug.innerHTML = '<pre>location.search: ' + encodeURI(window.location.search) +
-                      '\\nlocation.hash: ' + encodeURI(window.location.hash) +
-                      '\\nfull href: ' + encodeURI(window.location.href) + '</pre>';
-
     if (error) {
-      status.textContent = 'OAuth error: ' + error;
+      document.getElementById('status').innerText = 'OAuth Error: ' + error;
+      return;
     }
-
     if (userId && secret) {
-      const target = APP_SCHEME + '?userId=' + encodeURIComponent(userId) + '&secret=' + encodeURIComponent(secret);
-      const altTarget = ALT_SCHEME + '?userId=' + encodeURIComponent(userId) + '&secret=' + encodeURIComponent(secret);
-
-      // Try immediate replace (preferred)
-      try {
-        window.location.replace(target);
-      } catch (e) {}
-
-      // Also try setting href after tiny delay (some browsers need it)
-      setTimeout(function() {
-        try { window.location.href = target; } catch(e) {}
-      }, 200);
-
-      // Android intent fallback (some Android browsers allow intent scheme)
-      setTimeout(function() {
+      const target = `${APP_SCHEME}?userId=${encodeURIComponent(userId)}&secret=${encodeURIComponent(secret)}`;
+      // Try multiple redirect methods
+      try { window.location.replace(target); } catch(e){}
+      setTimeout(()=>{ try{ window.location.href = target; }catch(e){} }, 200);
+      setTimeout(()=>{ 
         try {
-          const intentUrl = 'intent://' + target.replace(/^[^:]+:\/\//,'') + '#Intent;scheme=' + target.split(':')[0] + ';package=com.danieldon.fxlens;end';
-          window.location.href = intentUrl;
-        } catch(e) {}
+          const intent = 'intent://' + target.replace(/^[^:]+:\/\//,'') + '#Intent;scheme=' + target.split(':')[0] + ';package=com.danieldon.fxlens;end';
+          window.location.href = intent;
+        } catch(e){}
       }, 600);
-
       // clickable fallback
-      fallback.innerHTML = '<p>If you are not redirected automatically, <a class="button" href="' + target + '">Open FxLens</a></p>' +
-                           '<p>Alternative: <a class="button" href="' + altTarget + '">Open FxLens (alternate)</a></p>';
-      status.textContent = 'Redirecting to app…';
+      document.body.innerHTML = `<p>If redirect fails, <a href="${target}">open the app</a></p>`;
     } else {
-      status.textContent = 'Missing userId/secret in redirect. Click the button to open app and debug.';
-      fallback.innerHTML = '<p><a class="button" href="' + APP_SCHEME + '">Open FxLens</a></p>' +
-                           '<p>If you don’t see parameters in the previous box, check that Appwrite is including them in the redirect to this page.</p>';
+      document.getElementById('status').innerText = 'Missing userId/secret in callback — show the full URL in console for debugging';
+      console.log('Full redirect URL:', window.location.href);
     }
   })();
   </script>
