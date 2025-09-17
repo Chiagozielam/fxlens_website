@@ -9,18 +9,18 @@
     const userId = qs.get('userId');
     const secret = qs.get('secret');
     const error = qs.get('error');
-    // Primary app scheme (matches Appwrite platform and app.json)
+
     const APP_SCHEME = 'appwrite-callback-6854257a000c3a519205://auth';
     const ALT_SCHEME = 'fxlens://oauth';
 
     if (error) {
       document.getElementById('status').innerText = 'OAuth Error: ' + error;
+      console.log('OAuth error param:', error);
       return;
     }
     if (userId && secret) {
       const target = `${APP_SCHEME}?userId=${encodeURIComponent(userId)}&secret=${encodeURIComponent(secret)}`;
-      // Try multiple redirect methods
-      try { window.location.replace(target); } catch(e){}
+      try { window.location.replace(target); } catch(e) {}
       setTimeout(()=>{ try{ window.location.href = target; }catch(e){} }, 200);
       setTimeout(()=>{ 
         try {
@@ -28,11 +28,10 @@
           window.location.href = intent;
         } catch(e){}
       }, 600);
-      // clickable fallback
-      document.body.innerHTML = `<p>If redirect fails, <a href="${target}">open the app</a></p>`;
+      document.body.innerHTML = `<p>If redirect fails, <a href="${target}">open the app</a></p><p>Alternate: <a href="${ALT_SCHEME}?userId=${encodeURIComponent(userId)}&secret=${encodeURIComponent(secret)}">open alt scheme</a></p>`;
     } else {
-      document.getElementById('status').innerText = 'Missing userId/secret in callback — show the full URL in console for debugging';
-      console.log('Full redirect URL:', window.location.href);
+      document.getElementById('status').innerText = 'Missing userId/secret in callback; check Appwrite / Google config.';
+      console.log('Full redirect URL for debugging:', window.location.href);
     }
   })();
   </script>
