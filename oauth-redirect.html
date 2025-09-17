@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>FxLens OAuth redirect</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script>
+      // immediately run
+      (function () {
+        try {
+          const qs = new URLSearchParams(window.location.search || window.location.hash.replace('#','?'));
+          const userId = qs.get('userId');
+          const secret = qs.get('secret');
+          const error = qs.get('error');
+
+          // Choose which scheme you want to redirect to:
+          // Option 1: appwrite-callback-<projectId> scheme (matches your Appwrite platform)
+          const APP_SCHEME = 'appwrite-callback-6854257a000c3a519205://auth';
+          // Option 2: fxlens scheme if you later switch to that
+          // const APP_SCHEME = 'fxlens://oauth';
+
+          if (error) {
+            // on failure, pass the error param through
+            window.location.href = APP_SCHEME + '?error=' + encodeURIComponent(error);
+            return;
+          }
+
+          if (userId && secret) {
+            const target = `${APP_SCHEME}?userId=${encodeURIComponent(userId)}&secret=${encodeURIComponent(secret)}`;
+            // For older android/os, some browsers disallow immediate redirects to custom schemes.
+            // We'll try an instant redirect, and also render a fallback link.
+            window.location.replace(target);
+            // fallback clickable link if automatic redirect blocked:
+            document.body.innerHTML = '<p>If you are not redirected, <a id="lnk" href="' + target + '">open the app</a></p>';
+          } else {
+            // Nothing to forward — show instructions or error
+            document.body.innerHTML = '<p>Missing userId/secret in query string. <pre>' + encodeURIComponent(window.location.href) + '</pre></p>';
+          }
+        } catch (e) {
+          document.body.innerText = 'Redirect failed: ' + e.message;
+        }
+      })();
+    </script>
+  </head>
+  <body style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui,Arial;">
+    <div>Redirecting…</div>
+  </body>
+</html>
