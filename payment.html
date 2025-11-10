@@ -3,107 +3,357 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>FxLens · Crypto Payments</title>
-    <meta name="description" content="Pay with crypto for FxLens Weekly, Monthly, or 6-Month access. Send receipt via WhatsApp for fast activation. Manual crypto payments are non-refundable." />
+    <title>Fxlens · Crypto Payments</title>
+    <meta
+      name="description"
+      content="Pay with crypto for Fxlens Weekly, Monthly, or 6-Month access. Send receipt via WhatsApp for fast activation. Manual crypto payments are non-refundable."
+    />
     <meta name="theme-color" content="#0B1020" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
       /* ---------- Mobile-first Design System ---------- */
-      :root{
-        --bg: #0b1020; --surface: #0f162f; --card: #121a36;
-        --text: #e9eef7; --muted: #9aa6b7;
-        --brand: #22d1c6; --brand2: #00bcd4; --accent: #6b7cff; --danger: #ffd6a3;
-        --radius: 18px; --radius-lg: 22px; --radius-xl: 26px;
-        --shadow: 0 18px 60px rgba(0,0,0,.45);
-        --gridline: rgba(140,149,255,.07);
-        --pad: 20px; --gap: 16px;
+      :root {
+        --bg: #0b1020;
+        --surface: #0f162f;
+        --card: #121a36;
+        --text: #e9eef7;
+        --muted: #9aa6b7;
+        --brand: #22d1c6;
+        --brand2: #00bcd4;
+        --accent: #6b7cff;
+        --danger: #ffd6a3;
+        --radius: 18px;
+        --radius-lg: 22px;
+        --radius-xl: 26px;
+        --shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+        --gridline: rgba(140, 149, 255, 0.07);
+        --pad: 20px;
+        --gap: 16px;
         --content-w: 980px;
         --content-w-wide: 1120px;
       }
-      *{box-sizing:border-box}
-      html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Helvetica Neue,Arial;-webkit-font-smoothing:antialiased}
-      a{color:inherit;text-decoration:none}
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+          Cantarell, Helvetica Neue, Arial;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
 
       /* Page gutters */
-      .page{padding-inline:clamp(20px, 6vw, 56px); padding-block: 12px}
-      .container{margin:0 auto; width:100%; max-width:var(--content-w)}
-      .container-wide{margin:0 auto; width:100%; max-width:var(--content-w-wide)}
+      .page {
+        padding-inline: clamp(20px, 6vw, 56px);
+        padding-block: 12px;
+      }
+      .container {
+        margin: 0 auto;
+        width: 100%;
+        max-width: var(--content-w);
+      }
+      .container-wide {
+        margin: 0 auto;
+        width: 100%;
+        max-width: var(--content-w-wide);
+      }
 
       /* Ambient grid + mesh (back) */
-      .scene{position:fixed;inset:0;z-index:-2;pointer-events:none}
-      .mesh{position:absolute;inset:-20% -20% auto -20%;height:64vh;filter:blur(44px) saturate(120%);opacity:.94;background:
-        radial-gradient(840px 380px at 10% 16%, rgba(34,209,198,.22), transparent 60%),
-        radial-gradient(760px 340px at 92% 10%, rgba(107,124,255,.2), transparent 60%),
-        radial-gradient(880px 400px at 50% 120%, rgba(0,188,212,.18), transparent 60%);
+      .scene {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        pointer-events: none;
       }
-      .gridlines{position:absolute;inset:0;background:
-        linear-gradient(to right, var(--gridline) 1px, transparent 1px) 0 0/28px 28px,
-        linear-gradient(to bottom, var(--gridline) 1px, transparent 1px) 0 0/28px 28px;
-        opacity:.6; mask-image: radial-gradient(90% 60% at 50% 20%, rgba(255,255,255,.9), transparent 70%);
+      .mesh {
+        position: absolute;
+        inset: -20% -20% auto -20%;
+        height: 64vh;
+        filter: blur(44px) saturate(120%);
+        opacity: 0.94;
+        background: radial-gradient(
+            840px 380px at 10% 16%,
+            rgba(34, 209, 198, 0.22),
+            transparent 60%
+          ),
+          radial-gradient(
+            760px 340px at 92% 10%,
+            rgba(107, 124, 255, 0.2),
+            transparent 60%
+          ),
+          radial-gradient(
+            880px 400px at 50% 120%,
+            rgba(0, 188, 212, 0.18),
+            transparent 60%
+          );
+      }
+      .gridlines {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+              to right,
+              var(--gridline) 1px,
+              transparent 1px
+            )
+            0 0/28px 28px,
+          linear-gradient(to bottom, var(--gridline) 1px, transparent 1px) 0 0/28px
+            28px;
+        opacity: 0.6;
+        mask-image: radial-gradient(
+          90% 60% at 50% 20%,
+          rgba(255, 255, 255, 0.9),
+          transparent 70%
+        );
       }
 
       /* Hero (centered) */
-      .hero{padding:92px 0 20px;text-align:center}
-      .kicker{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;padding:8px 12px;border-radius:999px;background:rgba(34,209,198,.14);border:1px solid rgba(34,209,198,.26);color:#c9fff6;font-weight:800;letter-spacing:.2px}
-      h1{margin:12px 0 8px;font-size:clamp(32px,6.4vw,58px);line-height:1.06;background:linear-gradient(90deg,#e9eef7,#9be9e3 38%,#c0c8ff 75%);-webkit-background-clip:text;background-clip:text;color:transparent}
-      .lead{margin:0 auto;color:var(--muted);max-width:70ch;font-size:clamp(15px,3.8vw,18px)}
+      .hero {
+        padding: 92px 0 20px;
+        text-align: center;
+      }
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12.5px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(34, 209, 198, 0.14);
+        border: 1px solid rgba(34, 209, 198, 0.26);
+        color: #c9fff6;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+      }
+      h1 {
+        margin: 12px 0 8px;
+        font-size: clamp(32px, 6.4vw, 58px);
+        line-height: 1.06;
+        background: linear-gradient(90deg, #e9eef7, #9be9e3 38%, #c0c8ff 75%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .lead {
+        margin: 0 auto;
+        color: var(--muted);
+        max-width: 70ch;
+        font-size: clamp(15px, 3.8vw, 18px);
+      }
 
       /* Auto-grid: pricing cards */
-      .auto-grid{display:grid; gap: var(--gap);}
+      .auto-grid {
+        display: grid;
+        gap: var(--gap);
+      }
       /* Stack on mobile */
-      .auto-grid.cols-3{grid-template-columns: 1fr;}
+      .auto-grid.cols-3 {
+        grid-template-columns: 1fr;
+      }
       /* 2-up on small tablets */
-      @media (min-width:640px){
-        .auto-grid.cols-3{grid-template-columns: repeat(2, minmax(0,1fr));}
+      @media (min-width: 640px) {
+        .auto-grid.cols-3 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
       }
       /* 3-up on desktops */
-      @media (min-width:960px){
-        .auto-grid.cols-3{grid-template-columns: repeat(3, minmax(0,1fr));}
+      @media (min-width: 960px) {
+        .auto-grid.cols-3 {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
       }
-      .auto-grid.cols-3 > .card{min-width:0}
+      .auto-grid.cols-3 > .card {
+        min-width: 0;
+      }
 
       /* Cards */
-      .card{position:relative;background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-xl);box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column}
-      .pill{position:absolute;top:12px;right:12px;font-size:12px;padding:7px 12px;border-radius:999px;background:linear-gradient(135deg,var(--brand),var(--accent));color:#03121a;font-weight:900}
-      .plan{font-weight:800;letter-spacing:.2px}
-      .price{font-size:36px;font-weight:900;margin:4px 0 2px}
-      .unit{color:var(--muted);font-size:13px}
-      .save{margin-top:8px;font-weight:800;color:#cbd4ff}
-      .features{margin:10px 0 16px;color:var(--muted);font-size:14px}
-      .features li{margin:6px 0}
-      .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 18px;border-radius:999px;border:0;cursor:pointer;font-weight:900;letter-spacing:.3px;width:100%}
-      .btn-primary{color:#041016;background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 12px 36px rgba(34,209,198,.22)}
-      .btn-outline{background:transparent;border:1px solid rgba(255,255,255,.16);color:var(--text)}
+      .card {
+        position: relative;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.06),
+          rgba(255, 255, 255, 0.03)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+      }
+      .pill {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-size: 12px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--brand), var(--accent));
+        color: #03121a;
+        font-weight: 900;
+      }
+      .plan {
+        font-weight: 800;
+        letter-spacing: 0.2px;
+      }
+      .price {
+        font-size: 36px;
+        font-weight: 900;
+        margin: 4px 0 2px;
+      }
+      .unit {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .save {
+        margin-top: 8px;
+        font-weight: 800;
+        color: #cbd4ff;
+      }
+      .features {
+        margin: 10px 0 16px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .features li {
+        margin: 6px 0;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px 18px;
+        border-radius: 999px;
+        border: 0;
+        cursor: pointer;
+        font-weight: 900;
+        letter-spacing: 0.3px;
+        width: 100%;
+      }
+      .btn-primary {
+        color: #041016;
+        background: linear-gradient(135deg, var(--brand), var(--brand2));
+        box-shadow: 0 12px 36px rgba(34, 209, 198, 0.22);
+      }
+      .btn-outline {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        color: var(--text);
+      }
 
       /* Section titles */
-      .section-title{font-size:clamp(20px,5vw,26px);margin:0 0 8px;text-align:center}
-      .section-sub{color:var(--muted);text-align:center;margin:0 0 12px}
+      .section-title {
+        font-size: clamp(20px, 5vw, 26px);
+        margin: 0 0 8px;
+        text-align: center;
+      }
+      .section-sub {
+        color: var(--muted);
+        text-align: center;
+        margin: 0 0 12px;
+      }
 
       /* Payment: mobile-first single column, centered card width */
-      .panel{margin-top:30px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:20px}
-      .panel-narrow{max-width:720px;margin:0 auto}
-      .row{display:grid;grid-template-columns:1fr;gap:16px}
-      label{display:block;font-weight:800;margin-bottom:8px}
-      input[type=text]{width:100%;padding:15px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:var(--text);font-size:14px}
-      .actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px}
-      .qr{width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:#0e1326;aspect-ratio:1/1;display:grid;place-items:center;overflow:hidden}
-      .tips{color:var(--muted);font-size:13px;line-height:1.75}
+      .panel {
+        margin-top: 30px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+        padding: 20px;
+      }
+      .panel-narrow {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      label {
+        display: block;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 15px 14px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        font-size: 14px;
+      }
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+      .qr {
+        width: 100%;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: #0e1326;
+        aspect-ratio: 1/1;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+      .tips {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.75;
+      }
 
       /* Notice */
-      .notice{margin-top:14px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:12px 14px;border-radius:14px;background:rgba(255,214,163,.08);border:1px solid rgba(255,214,163,.28);color:#ffe1c4}
-      .notice b{color:#ffe9d3}
+      .notice {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 12px;
+        align-items: start;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(255, 214, 163, 0.08);
+        border: 1px solid rgba(255, 214, 163, 0.28);
+        color: #ffe1c4;
+      }
+      .notice b {
+        color: #ffe9d3;
+      }
 
       /* Responsive upsizes */
-      @media (min-width:640px){
-        .row.cols-2{grid-template-columns:1fr 1fr}
-        .panel{margin-top:34px; padding:22px}
+      @media (min-width: 640px) {
+        .row.cols-2 {
+          grid-template-columns: 1fr 1fr;
+        }
+        .panel {
+          margin-top: 34px;
+          padding: 22px;
+        }
       }
-      @media (min-width:960px){
-        .panel{margin-top:40px; padding:24px}
+      @media (min-width: 960px) {
+        .panel {
+          margin-top: 40px;
+          padding: 24px;
+        }
       }
     </style>
   </head>
@@ -118,12 +368,17 @@
       <!-- HERO (centered) -->
       <section class="container hero" id="top">
         <span class="kicker">Alternative access · Crypto</span>
-        <h1>Pay with crypto. Get FxLens access.</h1>
-        <p class="lead">Use this page only if your card / in-app purchase fails. Pick a plan, send your crypto, then send your receipt on WhatsApp for fast activation. <strong>Manual crypto payments are non-refundable.</strong></p>
+        <h1>Pay with crypto. Get Fxlens access.</h1>
+        <p class="lead">
+          Use this page only if your card / in-app purchase fails. Pick a plan,
+          send your crypto, then send your receipt on WhatsApp for fast
+          activation.
+          <strong>Manual crypto payments are non-refundable.</strong>
+        </p>
       </section>
 
       <!-- PRICING CARDS -->
-      <section class="container" style="margin-bottom:18px">
+      <section class="container" style="margin-bottom: 18px">
         <div class="auto-grid cols-3" aria-label="Plans">
           <!-- Weekly -->
           <article class="card" data-pick-plan="weekly">
@@ -133,7 +388,7 @@
               <div class="unit">Billed once • 7 days</div>
               <div class="save">Save ~55% with Monthly</div>
               <ul class="features">
-                <li>All FxLens Pro features</li>
+                <li>All Fxlens Pro features</li>
                 <li>Fast manual activation</li>
                 <li>Good for a trial week</li>
               </ul>
@@ -150,7 +405,7 @@
               <div class="unit">Billed once • 30 days</div>
               <div class="save">Save ~55% vs weekly</div>
               <ul class="features">
-                <li>All FxLens Pro features</li>
+                <li>All Fxlens Pro features</li>
                 <li>Priority verification</li>
                 <li>Best value for most traders</li>
               </ul>
@@ -166,7 +421,7 @@
               <div class="unit">Billed once • 180 days</div>
               <div class="save">Save ~44% vs monthly · ~77% vs weekly</div>
               <ul class="features">
-                <li>All FxLens Pro features</li>
+                <li>All Fxlens Pro features</li>
                 <li>VIP verification</li>
                 <li>Lowest daily cost</li>
               </ul>
@@ -177,14 +432,24 @@
       </section>
 
       <!-- PAYMENT DETAILS -->
-      <section class="container panel panel-narrow" aria-label="Payment details">
+      <section
+        class="container panel panel-narrow"
+        aria-label="Payment details"
+      >
         <h2 class="section-title">Payment details</h2>
-        <p class="section-sub" id="planLabel">Selected plan: <b>Monthly – $17.99</b></p>
+        <p class="section-sub" id="planLabel">
+          Selected plan: <b>Monthly – $17.99</b>
+        </p>
 
         <div class="row cols-2">
           <div>
             <label for="network">Asset & network</label>
-            <input id="network" type="text" value="USDT · TRC-20 (Tron) — Only" readonly />
+            <input
+              id="network"
+              type="text"
+              value="USDT · TRC-20 (Tron) — Only"
+              readonly
+            />
           </div>
           <div>
             <label for="amount">Amount (USD)</label>
@@ -194,47 +459,126 @@
 
         <div class="row cols-2">
           <div>
-            <label for="address" style="margin-top: 5%;">Destination address</label>
+            <label for="address" style="margin-top: 5%"
+              >Destination address</label
+            >
             <input id="address" type="text" readonly value="" />
             <div class="actions">
-              <button class="btn btn-outline" id="copyBtn" type="button" style="width:auto">Copy address</button>
-              <span class="tips">Only send <b>USDT on TRC-20 (Tron)</b>. Wrong-network transfers may be lost.</span>
+              <button
+                class="btn btn-outline"
+                id="copyBtn"
+                type="button"
+                style="width: auto"
+              >
+                Copy address
+              </button>
+              <span class="tips"
+                >Only send <b>USDT on TRC-20 (Tron)</b>. Wrong-network transfers
+                may be lost.</span
+              >
             </div>
           </div>
-          <div class="qr" aria-label="Payment QR" style="margin-top: 5%; margin-bottom: 5%;">
-            <img id="qr" alt="QR code" src="/payment-qr.jpg" style="width:100%;height:100%;object-fit:cover" />
+          <div
+            class="qr"
+            aria-label="Payment QR"
+            style="margin-top: 5%; margin-bottom: 5%"
+          >
+            <img
+              id="qr"
+              alt="QR code"
+              src="/payment-qr.jpg"
+              style="width: 100%; height: 100%; object-fit: cover"
+            />
           </div>
         </div>
 
         <div class="row cols-2">
           <div>
-            <h3 style="margin:0 0 8px">Tips</h3>
-            <ul class="tips" style="margin:0 0 8px -25px">
-              <li>Use adequate network fees so your transfer confirms quickly.</li>
-              <li>Save your TxID (transaction hash); you’ll include it in WhatsApp.</li>
-              <li>We’ll link access to your FxLens account email once verified.</li>
+            <h3 style="margin: 0 0 8px">Tips</h3>
+            <ul class="tips" style="margin: 0 0 8px -25px">
+              <li>
+                Use adequate network fees so your transfer confirms quickly.
+              </li>
+              <li>
+                Save your TxID (transaction hash); you’ll include it in
+                WhatsApp.
+              </li>
+              <li>
+                We’ll link access to your Fxlens account email once verified.
+              </li>
             </ul>
           </div>
           <div>
-            <h3 style="margin:0 0 8px">Send receipt on WhatsApp</h3>
-            <p class="tips" style="margin:0 0 8px">Tap below to open WhatsApp with a pre-filled message. Attach your receipt screenshot + TxID.</p>
+            <h3 style="margin: 0 0 8px">Send receipt on WhatsApp</h3>
+            <p class="tips" style="margin: 0 0 8px">
+              Tap below to open WhatsApp with a pre-filled message. Attach your
+              receipt screenshot + TxID.
+            </p>
             <div class="actions">
-              <a id="waBtn" class="btn btn-primary" target="_blank" rel="noopener" href="#">Open WhatsApp & send receipt</a>
+              <a
+                id="waBtn"
+                class="btn btn-primary"
+                target="_blank"
+                rel="noopener"
+                href="#"
+                >Open WhatsApp & send receipt</a
+              >
               <span class="tips">Number: <b>0803 439 1101</b></span>
             </div>
           </div>
         </div>
 
         <div class="notice" role="note">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
-          <div><b>Non-refundable:</b> manual crypto payments cannot be refunded. Double-check the <b>network</b> and <b>address</b> before sending.</div>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 8v4" />
+            <path d="M12 16h.01" />
+          </svg>
+          <div>
+            <b>Non-refundable:</b> manual crypto payments cannot be refunded.
+            Double-check the <b>network</b> and <b>address</b> before sending.
+          </div>
         </div>
       </section>
 
-      <footer class="page" style="padding:40px 0 72px;color:#aab6c8">
-        <div class="container-wide" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-          <div style="display:flex;align-items:center;gap:12px"><div style="width:16px;height:16px;border-radius:4px;background:linear-gradient(135deg,var(--brand),var(--accent))"></div><strong>FxLens</strong></div>
-          <div class="mini">© 2025 Spillcode Concepts. All rights reserved. · <a href="/support.html">Support</a></div>
+      <footer class="page" style="padding: 40px 0 72px; color: #aab6c8">
+        <div
+          class="container-wide"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="display: flex; align-items: center; gap: 12px">
+            <div
+              style="
+                width: 16px;
+                height: 16px;
+                border-radius: 4px;
+                background: linear-gradient(
+                  135deg,
+                  var(--brand),
+                  var(--accent)
+                );
+              "
+            ></div>
+            <strong>Fxlens</strong>
+          </div>
+          <div class="mini">
+            © 2025 Fxlens Technologies. All rights reserved. ·
+            <a href="/support.html">Support</a>
+          </div>
         </div>
       </footer>
     </main>
@@ -242,56 +586,68 @@
     <script>
       // Wallet addresses (replace with real)
       const ADDRESSES = {
-        USDT_TRON: "TY1ohh1gtE1Sfu4D7qej9SA2CnvwBefwxN" // TRC-20 T...
+        USDT_TRON: "TY1ohh1gtE1Sfu4D7qej9SA2CnvwBefwxN", // TRC-20 T...
       };
 
       const PLANS = {
-        weekly:  { label: 'Weekly',  amount: 9.99 },
-        monthly: { label: 'Monthly', amount: 17.99 },
-        '6m':    { label: '6 Months',amount: 59.99 }
+        weekly: { label: "Weekly", amount: 9.99 },
+        monthly: { label: "Monthly", amount: 17.99 },
+        "6m": { label: "6 Months", amount: 59.99 },
       };
 
-      let currentPlan = 'monthly';
-      let currentNetwork = 'USDT_TRON';
+      let currentPlan = "monthly";
+      let currentNetwork = "USDT_TRON";
 
-      const planCards = document.querySelectorAll('[data-pick-plan]');
-      const planLabel = document.getElementById('planLabel');
-      const amountEl  = document.getElementById('amount');
-      const addrEl    = document.getElementById('address');
-      const qrImg     = document.getElementById('qr');
-      const copyBtn   = document.getElementById('copyBtn');
-      const waBtn     = document.getElementById('waBtn');
+      const planCards = document.querySelectorAll("[data-pick-plan]");
+      const planLabel = document.getElementById("planLabel");
+      const amountEl = document.getElementById("amount");
+      const addrEl = document.getElementById("address");
+      const qrImg = document.getElementById("qr");
+      const copyBtn = document.getElementById("copyBtn");
+      const waBtn = document.getElementById("waBtn");
 
-      planCards.forEach(card => {
-        card.addEventListener('click', (e) => {
-          if(e.target.closest('button')){
-            const id = card.getAttribute('data-pick-plan');
+      planCards.forEach((card) => {
+        card.addEventListener("click", (e) => {
+          if (e.target.closest("button")) {
+            const id = card.getAttribute("data-pick-plan");
             currentPlan = id;
             const { label, amount } = PLANS[currentPlan];
-            planLabel.innerHTML = `Selected plan: <b>${label} – $${amount.toFixed(2)}</b>`;
+            planLabel.innerHTML = `Selected plan: <b>${label} – $${amount.toFixed(
+              2
+            )}</b>`;
             amountEl.value = amount.toFixed(2);
             updateWA();
-            document.querySelector('.panel')?.scrollIntoView({ behavior:'smooth', block:'start' });
+            document
+              .querySelector(".panel")
+              ?.scrollIntoView({ behavior: "smooth", block: "start" });
           }
-        })
-      })
-
-      copyBtn.addEventListener('click', async ()=>{
-        try{ await navigator.clipboard.writeText(addrEl.value); copyBtn.textContent='Copied!'; setTimeout(()=>copyBtn.textContent='Copy address',1400);}catch{ alert('Copy failed. Select and copy manually.'); }
+        });
       });
 
-      function updateAddressAndQR(){
-        const addr = ADDRESSES[currentNetwork] || 'SET_ADDRESS_FIRST';
+      copyBtn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(addrEl.value);
+          copyBtn.textContent = "Copied!";
+          setTimeout(() => (copyBtn.textContent = "Copy address"), 1400);
+        } catch {
+          alert("Copy failed. Select and copy manually.");
+        }
+      });
+
+      function updateAddressAndQR() {
+        const addr = ADDRESSES[currentNetwork] || "SET_ADDRESS_FIRST";
         addrEl.value = addr;
         const payload = encodeURIComponent(addr);
         qrImg.src = `/payment-qr.jpg`; // Keep your static QR
         qrImg.alt = `QR for USDT · TRC-20 (Tron)`;
       }
 
-      function updateWA(){
+      function updateWA() {
         const { label, amount } = PLANS[currentPlan];
-        const phone = '2348034391101';
-        const msg = `Hello team, I just paid for the ${label.toLowerCase()} plan ($${amount.toFixed(2)}). Here is my receipt attached.`;
+        const phone = "2348034391101";
+        const msg = `Hello team, I just paid for the ${label.toLowerCase()} plan ($${amount.toFixed(
+          2
+        )}). Here is my receipt attached.`;
         waBtn.href = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
       }
 
