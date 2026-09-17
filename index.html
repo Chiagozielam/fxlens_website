@@ -338,6 +338,35 @@
     .nav-toggle{display:inline-flex;align-items:center;justify-content:center;}
   }
   @media(max-width:560px){.fgrid{grid-template-columns:1fr;}.fchip{display:none;}}
+
+  /* featured results carousel */
+  .res-head{display:flex;align-items:end;justify-content:space-between;gap:18px;flex-wrap:wrap;}
+  .res-link{font-weight:700;font-size:14px;color:var(--gold);display:inline-flex;align-items:center;gap:7px;white-space:nowrap;}
+  .res-link:hover{color:var(--gold-soft);}
+  .res-rail{position:relative;margin-top:30px;}
+  .res-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 4px 18px;scrollbar-width:none;}
+  .res-track::-webkit-scrollbar{display:none;}
+  .res-card{scroll-snap-align:start;flex:0 0 300px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,var(--surface),var(--ink-2));border:1px solid var(--line-2);box-shadow:0 22px 52px rgba(0,0,0,0.42);transition:border-color .2s,transform .2s;}
+  .res-card:hover{border-color:rgba(231,183,120,0.35);transform:translateY(-3px);}
+  .res-shot{position:relative;height:180px;background:#060910;}
+  .res-shot img{width:100%;height:100%;object-fit:cover;object-position:top;}
+  .res-shot::after{content:"";position:absolute;inset:auto 0 0 0;height:56px;background:linear-gradient(180deg,transparent,rgba(6,9,16,0.7));}
+  .res-badges{position:absolute;top:10px;left:10px;display:flex;gap:6px;z-index:2;}
+  .res-chip{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:4px 8px;border-radius:7px;backdrop-filter:blur(8px);}
+  .res-chip.win{color:#052a1c;background:linear-gradient(135deg,var(--green),#7CEFC6);}
+  .res-chip.pair{color:var(--text);background:rgba(7,11,22,0.72);border:1px solid var(--line-2);}
+  .res-body{padding:14px 16px 15px;}
+  .res-quote{font-size:13px;line-height:1.55;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .res-quote b{color:var(--gold);font-weight:400;}
+  .res-meta{display:flex;align-items:center;gap:9px;margin-top:11px;}
+  .res-av{width:28px;height:28px;border-radius:999px;flex:none;display:grid;place-items:center;font-weight:800;font-size:11px;color:#052a26;background:linear-gradient(135deg,var(--teal),var(--cyan));}
+  .res-name{font-weight:700;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .res-date{font-family:var(--mono);font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--faint);}
+  .res-nav{position:absolute;top:50%;transform:translateY(-60%);z-index:3;width:40px;height:40px;border-radius:999px;display:grid;place-items:center;background:rgba(7,11,22,0.85);border:1px solid var(--line-2);color:var(--text);cursor:pointer;transition:border-color .2s,background .2s;backdrop-filter:blur(8px);}
+  .res-nav:hover{border-color:var(--gold);}
+  .res-nav.prev{left:-8px;} .res-nav.next{right:-8px;}
+  .res-nav svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+  @media(max-width:560px){.res-card{flex-basis:255px;}.res-nav{display:none;}}
 </style>
   </head>
   <body>
@@ -370,6 +399,7 @@
       <a href="#signals">Daily Signals</a>
       <a href="#community">Community</a>
       <a href="#features">Features</a>
+      <a href="/results">Results</a>
     </nav>
     <div class="nav-cta">
       <a class="signin" href="#download">Log in</a>
@@ -384,6 +414,7 @@
     <a href="#signals">Daily Signals</a>
     <a href="#community">Community</a>
     <a href="#features">Features</a>
+    <a href="/results">Results</a>
     <a href="#download">Log in</a>
     <a href="#download" class="mm-cta">Get the app</a>
   </nav>
@@ -417,6 +448,24 @@
             <div class="lv"><div><div class="k">Entry</div><div class="v">2 387.40</div></div><div><div class="k">Stop</div><div class="v rd">2 393.10</div></div><div><div class="k">Target</div><div class="v g">2 373.80</div></div></div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="results" hidden>
+    <div class="wrap">
+      <div class="res-head">
+        <div>
+          <p class="eyebrow gold reveal">Featured results</p>
+          <h2 class="reveal">Real wins, shared by the room.</h2>
+          <p class="lead reveal">Members post their closed Daily Signals trades — screenshots included. A few recent ones:</p>
+        </div>
+        <a class="res-link reveal" href="/results">See all results <svg class="ic" style="width:15px;height:15px"><use href="#i-trend"/></svg></a>
+      </div>
+      <div class="res-rail reveal">
+        <button class="res-nav prev" id="resPrev" aria-label="Previous results"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div class="res-track" id="resTrack" aria-label="Featured member results"></div>
+        <button class="res-nav next" id="resNext" aria-label="More results"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
       </div>
     </div>
   </section>
@@ -567,6 +616,7 @@
   var els = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); } }); }, { threshold: 0.1 });
+    window.__revealIO = io;
     els.forEach(function (e, i) { e.style.transitionDelay = ((i % 4) * 60) + 'ms'; io.observe(e); });
   } else { els.forEach(function (e) { e.classList.add('vis'); }); }
 
@@ -606,6 +656,51 @@
     loop();
   }
 })();
+</script>
+<script>
+  // Featured results carousel — public, read-only, server-curated feed (no
+  // credentials; returns only admin-approved display fields).
+  (function () {
+    const FEED = "https://687828c60018db97b32d.fra.appwrite.run/featuredResults";
+    const esc = (x) => String(x).replace(/[&<>"']/g, (c) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+    const initials = (n) => n.split(/[\s@._-]+/).filter(Boolean).slice(0,2).map((w)=>w[0].toUpperCase()).join("") || "FX";
+    const fmtDate = (iso) => { try { return new Date(iso).toLocaleDateString(undefined,{month:"short",year:"numeric"}); } catch { return ""; } };
+
+    fetch(FEED).then((r) => r.json()).then((data) => {
+      const results = (data.results || []).filter((r) => r.imageUrl || r.quote).slice(0, 12);
+      if (!results.length) return;
+      const track = document.getElementById("resTrack");
+      track.innerHTML = results.map((r) => `
+        <article class="res-card">
+          ${r.imageUrl ? `<div class="res-shot">
+            <div class="res-badges">
+              ${r.result ? `<span class="res-chip win">${esc(r.result)}</span>` : ""}
+              ${r.pair ? `<span class="res-chip pair">${esc(r.pair)}</span>` : ""}
+            </div>
+            <img loading="lazy" src="${esc(r.imageUrl)}" alt="Result shared by ${esc(r.name)}">
+          </div>` : ""}
+          <div class="res-body">
+            ${r.quote ? `<p class="res-quote">${esc(r.quote)}</p>` : ""}
+            <div class="res-meta">
+              <span class="res-av">${esc(initials(r.name))}</span>
+              <div style="min-width:0">
+                <div class="res-name">${esc(r.name)}</div>
+                <div class="res-date">${esc(fmtDate(r.date))}</div>
+              </div>
+            </div>
+          </div>
+        </article>`).join("");
+      const section = document.getElementById("results");
+      section.hidden = false;
+      // re-arm reveal animations for the newly shown section
+      section.querySelectorAll(".reveal").forEach((el) => {
+        if (window.__revealIO) window.__revealIO.observe(el); else el.classList.add("vis");
+      });
+      const step = () => Math.min(track.clientWidth, 640);
+      document.getElementById("resPrev").addEventListener("click", () => track.scrollBy({ left: -step(), behavior: "smooth" }));
+      document.getElementById("resNext").addEventListener("click", () => track.scrollBy({ left: step(), behavior: "smooth" }));
+    }).catch(() => {});
+  })();
 </script>
   </body>
 </html>
