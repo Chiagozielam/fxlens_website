@@ -1,0 +1,3 @@
+# Same-origin proxy for the results feed — some networks/adblockers choke on
+# third-party *.appwrite.run requests; Netlify fetches it server-side instead.
+/api/featured-results  https://687828c60018db97b32d.fra.appwrite.run/featuredResults  200

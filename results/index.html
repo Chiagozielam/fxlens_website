@@ -190,7 +190,27 @@
 <script>
   // Public, read-only, server-curated feed — safe to call from a public repo:
   // it requires no credentials and returns only admin-approved display fields.
-  const RESULTS_FEED = "https://687828c60018db97b32d.fra.appwrite.run/featuredResults";
+  // Feed endpoints: same-origin Netlify proxy first (immune to networks and
+  // ad-blockers that choke on third-party domains), direct URL as fallback
+  // (also covers local dev, where the proxy doesn't exist). 12s timeout each.
+  const FEED_URLS = [
+    "/api/featured-results",
+    "https://687828c60018db97b32d.fra.appwrite.run/featuredResults",
+  ];
+  async function fetchFeed() {
+    for (const url of FEED_URLS) {
+      try {
+        const ctl = new AbortController();
+        const t = setTimeout(() => ctl.abort(), 12000);
+        const res = await fetch(url, { signal: ctl.signal });
+        clearTimeout(t);
+        if (!res.ok) continue;
+        const data = await res.json();
+        if (data && Array.isArray(data.results)) return data;
+      } catch (e) { /* try next */ }
+    }
+    throw new Error("feed unavailable");
+  }
 
   document.getElementById("y").textContent = new Date().getFullYear();
 
@@ -232,8 +252,7 @@
   async function load() {
     const wall = document.getElementById("wall");
     try {
-      const res = await fetch(RESULTS_FEED);
-      const data = await res.json();
+      const data = await fetchFeed();
       const results = (data.results || []).filter((r) => r.quote || r.imageUrl);
       wall.innerHTML = "";
       if (!results.length) {
