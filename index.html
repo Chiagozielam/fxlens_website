@@ -667,12 +667,32 @@
   // Featured results carousel — public, read-only, server-curated feed (no
   // credentials; returns only admin-approved display fields).
   (function () {
-    const FEED = "https://687828c60018db97b32d.fra.appwrite.run/featuredResults";
+    // Feed endpoints: same-origin Netlify proxy first (immune to networks and
+      // ad-blockers that choke on third-party domains), direct URL as fallback
+      // (also covers local dev, where the proxy doesn't exist). 12s timeout each.
+    const FEED_URLS = [
+      "/api/featured-results",
+      "https://687828c60018db97b32d.fra.appwrite.run/featuredResults",
+    ];
+    async function fetchFeed() {
+      for (const url of FEED_URLS) {
+        try {
+          const ctl = new AbortController();
+          const t = setTimeout(() => ctl.abort(), 12000);
+          const res = await fetch(url, { signal: ctl.signal });
+          clearTimeout(t);
+          if (!res.ok) continue;
+          const data = await res.json();
+          if (data && Array.isArray(data.results)) return data;
+        } catch (e) { /* try next */ }
+      }
+      throw new Error("feed unavailable");
+    }
     const esc = (x) => String(x).replace(/[&<>"']/g, (c) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
     const initials = (n) => n.split(/[\s@._-]+/).filter(Boolean).slice(0,2).map((w)=>w[0].toUpperCase()).join("") || "FX";
     const fmtDate = (iso) => { try { return new Date(iso).toLocaleDateString(undefined,{month:"short",year:"numeric"}); } catch { return ""; } };
 
-    fetch(FEED).then((r) => r.json()).then((data) => {
+    fetchFeed().then((data) => {
       const results = (data.results || []).filter((r) => r.imageUrl || r.quote).slice(0, 12);
       if (!results.length) return;
       const track = document.getElementById("resTrack");
