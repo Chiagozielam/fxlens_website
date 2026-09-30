@@ -1,3 +1,9 @@
 # Same-origin proxy for the results feed — some networks/adblockers choke on
 # third-party *.appwrite.run requests; Netlify fetches it server-side instead.
 /api/featured-results  https://687828c60018db97b32d.fra.appwrite.run/featuredResults  200
+
+# Trader public profiles: same-origin proxy to the backend's public endpoint,
+# and pretty /@handle URLs rewritten to the profile page (which reads the
+# handle from location.pathname).
+/api/profile/*  https://admin.fxlens.app/api/public/profile/:splat  200
+/@*  /u/index.html  200

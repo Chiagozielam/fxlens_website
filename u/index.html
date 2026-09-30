@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trader Profile – Fxlens</title>
+  <meta name="description" content="Verified trader profiles on Fxlens — wins, track record, and links." />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #070B16;
+      --card: #0D1322;
+      --line: rgba(255,255,255,0.08);
+      --text: #EEF3FC;
+      --muted: #A8B3C9;
+      --dim: #5D6A87;
+      --teal: #2DD4BF;
+      --gold: #F2D6AB;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; }
+    .wrap { max-width: 640px; margin: 0 auto; padding: 28px 18px 80px; }
+    .brand { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--text); font-weight: 700; font-size: 15px; }
+    .brand img { width: 26px; height: 26px; border-radius: 7px; }
+    .card { margin-top: 26px; background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 26px 22px; }
+    .head { display: flex; align-items: center; gap: 16px; }
+    .ava { width: 76px; height: 76px; border-radius: 999px; object-fit: cover; background: #1B2330; border: 2px solid rgba(45,212,191,0.35); }
+    .ava.fallback { display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 700; color: var(--teal); }
+    h1 { margin: 0; font-size: 24px; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; }
+    .pro { font-size: 10px; font-weight: 800; letter-spacing: 0.12em; color: #052e2b; background: var(--teal); border-radius: 999px; padding: 3px 8px; }
+    .handle { color: var(--teal); font-size: 14px; margin-top: 2px; }
+    .bio { color: var(--muted); font-size: 14.5px; margin-top: 14px; white-space: pre-wrap; }
+    .counts { display: flex; gap: 22px; margin-top: 16px; font-size: 14px; }
+    .counts b { color: var(--text); }
+    .counts span { color: var(--dim); }
+    .links { margin-top: 18px; display: grid; gap: 9px; }
+    .links a { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); border-radius: 14px; padding: 12px 15px; color: var(--text); text-decoration: none; font-size: 14px; font-weight: 600; transition: border-color .15s; }
+    .links a:hover { border-color: rgba(45,212,191,0.4); }
+    .links a::before { content: "↗"; color: var(--teal); font-weight: 700; }
+    h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--gold); margin: 38px 0 14px; }
+    .win { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; margin-bottom: 14px; }
+    .win img { width: 100%; display: block; max-height: 320px; object-fit: cover; }
+    .win .body { padding: 14px 16px; }
+    .win .result { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #34D399; }
+    .win p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+    .cta { margin-top: 44px; text-align: center; border-top: 1px solid var(--line); padding-top: 34px; }
+    .cta p { color: var(--muted); font-size: 14.5px; margin: 0 0 16px; }
+    .badges { display: flex; gap: 12px; justify-content: center; align-items: center; flex-wrap: wrap; }
+    .badges img { height: 46px; }
+    .state { margin-top: 80px; text-align: center; color: var(--dim); font-size: 15px; }
+    .state a { color: var(--teal); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/fxlens_icon.png" alt="" />Fxlens</a>
+
+    <div id="loading" class="state">Loading profile…</div>
+
+    <div id="notfound" class="state" style="display:none">
+      This trader profile doesn't exist (yet).<br /><br />
+      <a href="/">← Back to fxlens.app</a>
+    </div>
+
+    <div id="profile" style="display:none">
+      <div class="card">
+        <div class="head">
+          <img id="ava" class="ava" alt="" style="display:none" />
+          <div id="avaFallback" class="ava fallback" style="display:none"></div>
+          <div style="min-width:0">
+            <h1><span id="name"></span><span id="pro" class="pro" style="display:none">PRO</span></h1>
+            <div class="handle" id="handle"></div>
+          </div>
+        </div>
+        <div id="bio" class="bio" style="display:none"></div>
+        <div class="counts">
+          <div><b id="cFollowers">0</b> <span>Followers</span></div>
+          <div><b id="cFollowing">0</b> <span>Following</span></div>
+          <div><b id="cWins">0</b> <span>Wins</span></div>
+        </div>
+        <div id="links" class="links" style="display:none"></div>
+      </div>
+
+      <div id="winsSection" style="display:none">
+        <h2>Featured wins</h2>
+        <div id="wins"></div>
+      </div>
+
+      <div class="cta">
+        <p>Follow <span id="ctaName"></span> and trade smarter with FxLens.</p>
+        <div class="badges">
+          <a href="https://apps.apple.com/app/id6748287547"><img src="/appstore_download.png" alt="Download on the App Store" /></a>
+          <a href="https://play.google.com/store/apps/details?id=com.danieldon.fxlens"><img src="/playstore-badge.svg" alt="Get it on Google Play" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (async function () {
+      var m = location.pathname.match(/^\/@([A-Za-z0-9_.-]{2,40})\/?$/);
+      var show = function (id) { document.getElementById(id).style.display = ""; };
+      var hide = function (id) { document.getElementById(id).style.display = "none"; };
+      var text = function (id, v) { document.getElementById(id).textContent = v; };
+      if (!m) { hide("loading"); show("notfound"); return; }
+
+      try {
+        var res = await fetch("/api/profile/" + encodeURIComponent(m[1]));
+        if (!res.ok) throw new Error("not found");
+        var p = (await res.json()).data;
+
+        document.title = p.name + " (@" + p.handle + ") – Fxlens";
+        text("name", p.name);
+        text("handle", "@" + p.handle);
+        text("ctaName", "@" + p.handle);
+        if (p.pro) show("pro");
+        if (p.bio) { text("bio", p.bio); show("bio"); }
+        text("cFollowers", p.counts.followers);
+        text("cFollowing", p.counts.following);
+        text("cWins", p.counts.wins);
+
+        if (p.profileImage) {
+          var ava = document.getElementById("ava");
+          ava.src = p.profileImage;
+          ava.style.display = "";
+        } else {
+          var fb = document.getElementById("avaFallback");
+          fb.textContent = (p.name || "F").slice(0, 1).toUpperCase();
+          fb.style.display = "flex";
+        }
+
+        if (p.links && p.links.length) {
+          var linksEl = document.getElementById("links");
+          p.links.forEach(function (l) {
+            var a = document.createElement("a");
+            a.href = l.url;
+            a.rel = "noopener nofollow";
+            a.target = "_blank";
+            a.textContent = l.label || l.url.replace(/^https?:\/\//, "");
+            linksEl.appendChild(a);
+          });
+          show("links");
+        }
+
+        if (p.wins && p.wins.length) {
+          var winsEl = document.getElementById("wins");
+          p.wins.forEach(function (w) {
+            var d = document.createElement("div");
+            d.className = "win";
+            if (w.imageUrl) {
+              var img = document.createElement("img");
+              img.src = w.imageUrl;
+              img.loading = "lazy";
+              img.alt = "Trade result";
+              d.appendChild(img);
+            }
+            var body = document.createElement("div");
+            body.className = "body";
+            if (w.result) {
+              var r = document.createElement("div");
+              r.className = "result";
+              r.textContent = w.result;
+              body.appendChild(r);
+            }
+            if (w.quote) {
+              var q = document.createElement("p");
+              q.textContent = w.quote;
+              body.appendChild(q);
+            }
+            d.appendChild(body);
+            winsEl.appendChild(d);
+          });
+          show("winsSection");
+        }
+
+        hide("loading");
+        show("profile");
+      } catch (e) {
+        hide("loading");
+        show("notfound");
+      }
+    })();
+  </script>
+</body>
+</html>
