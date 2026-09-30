@@ -5,5 +5,5 @@
 # Trader public profiles: same-origin proxy to the backend's public endpoint,
 # and pretty /@handle URLs rewritten to the profile page (which reads the
 # handle from location.pathname).
-/api/profile/*  https://admin.fxlens.app/api/public/profile/:splat  200
+/api/profile/*  https://api.fxlens.app/api/public/profile/:splat  200
 /@*  /u/index.html  200
