@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.danieldon.fxlens",
+      "sha256_cert_fingerprints": [
+        "65:28:74:1E:C5:06:91:60:9E:D6:54:34:25:4F:3A:00:A4:68:23:CF:3A:D8:0A:4D:61:01:52:6D:4C:D8:6B:3A"
+      ]
+    }
+  }
+]
