@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["632X957SR8.com.danieldon.fxlens"],
+        "components": [
+          { "/": "/t/*", "comment": "Townhall posts" },
+          { "/": "/@*", "comment": "Trader profiles" }
+        ]
+      }
+    ]
+  }
+}
