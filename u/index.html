@@ -38,6 +38,8 @@
     .links a { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); border-radius: 14px; padding: 12px 15px; color: var(--text); text-decoration: none; font-size: 14px; font-weight: 600; transition: border-color .15s; }
     .links a:hover { border-color: rgba(45,212,191,0.4); }
     .links a::before { content: "↗"; color: var(--teal); font-weight: 700; }
+    .creator { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 18px; background: var(--teal); color: #052e2b; border-radius: 14px; padding: 13px 15px; text-decoration: none; font-size: 14px; font-weight: 800; }
+    .creator:hover { filter: brightness(1.06); }
     h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--gold); margin: 38px 0 14px; }
     .win { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; margin-bottom: 14px; }
     .win img { width: 100%; display: block; max-height: 320px; object-fit: cover; }
@@ -79,6 +81,7 @@
           <div><b id="cFollowing">0</b> <span>Following</span></div>
           <div><b id="cWins">0</b> <span>Wins</span></div>
         </div>
+        <a id="creator" class="creator" style="display:none" rel="noopener" target="_blank"></a>
         <div id="links" class="links" style="display:none"></div>
       </div>
 
@@ -128,6 +131,13 @@
           var fb = document.getElementById("avaFallback");
           fb.textContent = (p.name || "F").slice(0, 1).toUpperCase();
           fb.style.display = "flex";
+        }
+
+        if (p.creatorLink) {
+          var c = document.getElementById("creator");
+          c.href = p.creatorLink;
+          c.textContent = "Trade with @" + p.handle + "'s broker link";
+          c.style.display = "flex";
         }
 
         if (p.links && p.links.length) {
