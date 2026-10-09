@@ -156,7 +156,7 @@
         color: var(--text);
         font: 16px/1.6 var(--body);
         -webkit-font-smoothing: antialiased;
-        overflow-x: hidden;
+        overflow-x: clip;
       }
       img { max-width: 100%; display: block; }
       a { color: inherit; }
@@ -192,7 +192,7 @@
       /* ── hero ────────────────────────────────────────────── */
       .hero { position: relative; padding-block: 72px 56px; overflow: hidden; }
       .hero::before {
-        content: ""; position: absolute; inset: -20% -10% auto -10%; height: 820px; z-index: -1;
+        content: ""; position: absolute; inset: -20% 0 auto 0; height: 820px; z-index: -1;
         background:
           radial-gradient(600px 380px at 78% 30%, rgba(45, 212, 191, 0.16), transparent 70%),
           radial-gradient(520px 340px at 10% 10%, rgba(59, 130, 246, 0.10), transparent 70%);
@@ -351,7 +351,7 @@
       /* ── townhall ───────────────────────────────────────── */
       .th { position: relative; }
       .th::before {
-        content: ""; position: absolute; left: 50%; top: 120px; width: 900px; height: 700px; transform: translateX(-50%); z-index: -1;
+        content: ""; position: absolute; left: 50%; top: 120px; width: min(900px, 100%); height: 700px; transform: translateX(-50%); z-index: -1;
         background: radial-gradient(closest-side, rgba(45,212,191,.12), transparent);
       }
       .stage { position: relative; margin-top: 70px; display: grid; place-items: center; min-height: 760px; }
@@ -455,6 +455,43 @@
       footer a { text-decoration: none; color: var(--dim); }
       footer a:hover { color: var(--text); }
       .disclaimer { flex-basis: 100%; font-size: 12.5px; color: var(--faint); }
+
+      /* ── mobile ─────────────────────────────────────────── */
+      section.block, .final, .hero { overflow: hidden; }
+      @media (max-width: 640px) {
+        .nav .btn { padding: 9px 14px; font-size: 13.5px; }
+        .hero { padding-block: 36px 40px; }
+        .hero h1 { font-size: clamp(36px, 11vw, 52px); }
+        .hero p.lede { font-size: 16.5px; }
+        .stores { gap: 10px; }
+        .store { flex: 1 1 150px; justify-content: center; padding: 10px 12px; }
+        .trust { gap: 8px 18px; }
+        .term-top { flex-wrap: wrap; padding: 12px 14px; }
+        #tStatus { order: 3; flex-basis: 100%; font-size: 12.5px; }
+        .chart-box { height: auto; }
+        #heroChart { height: 240px; }
+        .setup { position: static; width: auto; margin: 0 12px 12px; transform: none; opacity: .35; }
+        .setup.show { opacity: 1; }
+        .term-foot { padding: 10px 14px; }
+        section.block { padding-block: 72px 24px; }
+        .sec-head p { font-size: 16.5px; }
+        .bento { margin-top: 32px; gap: 12px; }
+        .tile { padding: 20px; border-radius: 18px; }
+        .checklist li { font-size: 14px; padding: 10px 12px; }
+        .checklist li .val { display: none; }
+        .watch .lvl .top { flex-wrap: wrap; }
+        .watch .lvl .top .z { margin-left: 0; flex-basis: 100%; }
+        .tfs { gap: 8px; }
+        .stage { margin-top: 36px; }
+        .phone { width: min(300px, 82vw); border-radius: 40px; }
+        .f-win .head { flex-wrap: wrap; }
+        .f-win .head .hit { margin-left: 0; }
+        .f-win .pips { font-size: 52px; }
+        .pillars { margin-top: 40px; }
+        .res-card { flex-basis: 78vw; }
+        .final { padding-block: 80px; }
+        footer nav { margin-left: 0; }
+      }
 
       /* reveal (visible by default; animates only when JS opts in) */
       .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s ease, transform .8s ease; }
