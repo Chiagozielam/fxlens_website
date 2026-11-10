@@ -7,7 +7,20 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
+    gtag('config', 'AW-18558862653');
+    // Google Ads conversion: a click on an App Store / Play Store link.
+    // Beacon transport so the store opens straight away without losing the hit.
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (a && /apps\.apple\.com|play\.google\.com/.test(a.href)) {
+        gtag('event', 'conversion', {
+          send_to: 'AW-18558862653/ME2XCOeuqLUdEL2Kx5FF',
+          transport_type: 'beacon'
+        });
+      }
+    }, true);
   </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18558862653"></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>FxLens – Drop a chart. Get the trade.</title>
