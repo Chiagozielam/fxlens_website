@@ -223,7 +223,7 @@
         background-size: 56px 56px;
         mask-image: radial-gradient(ellipse at 60% 30%, #000 20%, transparent 70%);
       }
-      .hero .wrap { display: grid; grid-template-columns: 1.02fr 1fr; gap: 48px; align-items: center; }
+      .hero .wrap { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 40px; align-items: center; }
       .eyebrow {
         display: inline-flex; align-items: center; gap: 10px;
         font: 600 12.5px var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--teal);
@@ -248,27 +248,68 @@
       .trust { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 30px; color: var(--dim); font-size: 14px; }
       .trust b { color: var(--text); font-family: var(--mono); font-weight: 700; margin-right: 4px; }
 
-      /* hero terminal */
-      .terminal {
-        position: relative; border-radius: 22px; background: linear-gradient(180deg, var(--panel-2), var(--panel));
-        border: 1px solid var(--line-2);
-        box-shadow: 0 40px 120px -40px rgba(45, 212, 191, 0.35), 0 0 0 1px rgba(255,255,255,0.02) inset;
-        overflow: hidden;
+      /* hero: two phones — analyse + live Townhall ──────────────────────
+         Each screen is laid out at a fixed 360×760 "device" size and scaled
+         to the frame (--s), so both look like the real app at any width. */
+      .phones {
+        --pw: clamp(150px, 21vw, 278px);              /* phone frame width */
+        --s: calc((var(--pw) - 16px) / 360px);         /* unitless via JS fallback */
+        display: flex; justify-content: center; align-items: flex-start; gap: clamp(12px, 2.4vw, 30px);
+        position: relative;
       }
-      .term-top { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--dim); }
-      .term-top .pair { font: 700 14px var(--mono); color: var(--text); }
-      .term-top .tf { margin-left: auto; display: flex; gap: 6px; }
-      .term-top .tf span { padding: 3px 8px; border-radius: 6px; font: 600 11.5px var(--mono); color: var(--faint); border: 1px solid var(--line); }
+      .phones::before {
+        content: ""; position: absolute; inset: 8% 6% 14%; z-index: -1; border-radius: 50%;
+        background: radial-gradient(closest-side, rgba(45, 212, 191, 0.28), transparent 75%);
+        filter: blur(30px);
+      }
+      .hp { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+      .hp.p-analyse { transform: translateY(26px) rotate(-2.5deg); }
+      .hp.p-townhall { transform: rotate(2deg); }
+      .phone-shell {
+        width: var(--pw); padding: 8px; border-radius: calc(var(--pw) * 0.16);
+        background: linear-gradient(160deg, #2a2d2e, #0d0e0f 45%, #1d1f20);
+        box-shadow: 0 0 0 1px rgba(255,255,255,.07) inset, 0 40px 80px -30px rgba(0,0,0,.9), 0 30px 90px -40px rgba(45,212,191,.45);
+      }
+      .phone-screen {
+        position: relative; width: 100%; aspect-ratio: 360 / 760; overflow: hidden;
+        border-radius: calc(var(--pw) * 0.13); background: #000;
+      }
+      .phone-screen::before { /* dynamic island */
+        content: ""; position: absolute; top: 2.2%; left: 50%; width: 30%; height: 3.6%; transform: translateX(-50%);
+        background: #000; border-radius: 999px; z-index: 5; box-shadow: 0 0 0 1px rgba(255,255,255,.04);
+      }
+      .screen-inner {
+        position: absolute; left: 0; top: 0; width: 360px; height: 760px; transform-origin: 0 0;
+        transform: scale(var(--k, .7)); display: flex; flex-direction: column; background: #000; padding-top: 46px;
+      }
+      .app-bar { display: flex; align-items: center; gap: 8px; padding: 6px 16px 10px; }
+      .app-logo { display: inline-flex; align-items: center; gap: 8px; font: 700 17px var(--body); }
+      .app-logo img { width: 24px !important; height: 24px !important; max-width: none; border-radius: 7px; flex: none; }
+      .app-chip { margin-left: auto; font: 600 11px var(--body); color: var(--teal); background: rgba(45,212,191,.1); border: 1px solid rgba(45,212,191,.3); padding: 4px 9px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px; }
+      .app-chip.live { color: #fff; background: rgba(251,113,133,.16); border-color: rgba(251,113,133,.45); }
+      .app-chip.live i { width: 6px; height: 6px; border-radius: 50%; background: var(--loss); animation: pulse-red 1.6s ease-in-out infinite; }
+      @keyframes pulse-red { 50% { opacity: .35; } }
+      .th-inner iframe { flex: 1; width: 100%; border: 0; background: #000; display: block; }
+      .hp figcaption { display: flex; align-items: center; gap: 8px; font-size: clamp(11px, 1.15vw, 14px); color: var(--dim); text-align: center; flex-wrap: wrap; justify-content: center; }
+      .hp figcaption b { color: var(--text); font-weight: 700; }
+      .step-n { width: 22px; height: 22px; border-radius: 50%; display: inline-grid; place-items: center; font: 700 11.5px var(--mono); color: #032623; background: var(--teal); }
+
+      /* analysis screen (inside phone 1) */
+      .terminal { display: flex; flex-direction: column; flex: 1; padding: 0 12px 14px; gap: 10px; }
+      .term-top { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: var(--panel-2); border: 1px solid var(--line); font-size: 13px; color: var(--dim); }
+      .term-top .pair { font: 700 15px var(--mono); color: var(--text); }
+      .term-top .tf { margin-left: auto; display: flex; gap: 5px; }
+      .term-top .tf span { padding: 3px 7px; border-radius: 6px; font: 600 11px var(--mono); color: var(--faint); border: 1px solid var(--line); }
       .term-top .tf span.on { color: var(--teal); border-color: rgba(45,212,191,.4); background: rgba(45,212,191,.08); }
-      .chart-box { position: relative; height: 330px; }
+      .term-status { display: flex; align-items: center; gap: 8px; font: 600 12.5px var(--body); color: var(--dim); padding-left: 4px; }
+      .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 4px rgba(45,212,191,.18); animation: pulse 2s ease-in-out infinite; }
+      .chart-box { position: relative; height: 290px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); overflow: hidden; }
       #heroChart { width: 100%; height: 100%; display: block; }
       .setup {
-        position: absolute; right: 16px; bottom: 16px; width: min(270px, 62%);
-        background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(10px);
-        border: 1px solid var(--line-2); border-radius: 16px; padding: 14px 14px 12px;
-        opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease;
+        background: var(--panel-2); border: 1px solid var(--line-2); border-radius: 16px; padding: 14px 14px 12px;
+        opacity: .25; transform: translateY(6px); transition: opacity .5s ease, transform .5s ease, box-shadow .5s;
       }
-      .setup.show { opacity: 1; transform: none; }
+      .setup.show { opacity: 1; transform: none; box-shadow: 0 0 0 1px rgba(45,212,191,.35), 0 18px 40px -20px rgba(45,212,191,.6); }
       .setup-head { display: flex; align-items: center; gap: 8px; }
       .setup-head .p { font: 700 15px var(--mono); }
       .side { font: 700 11px var(--body); letter-spacing: .06em; padding: 3px 8px; border-radius: 6px; }
@@ -277,10 +318,10 @@
       .setup-head .str { margin-left: auto; font-size: 11px; color: var(--dim); }
       .levels { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; margin-top: 10px; }
       .levels div small { display: block; font: 600 10px var(--body); letter-spacing: .1em; color: var(--faint); }
-      .levels div b { font: 700 15px var(--mono); }
+      .levels div b { font: 700 16px var(--mono); }
       .checks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
       .checks span { font: 600 10.5px var(--body); color: var(--teal); background: rgba(45,212,191,.08); border: 1px solid rgba(45,212,191,.25); padding: 3px 7px; border-radius: 999px; }
-      .term-foot { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--dim); }
+      .term-foot { margin-top: auto; display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--dim); }
       .term-foot .timer { font-family: var(--mono); color: var(--text); }
       .term-foot .bar { flex: 1; height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
       .term-foot .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--teal), var(--gain)); }
@@ -288,6 +329,8 @@
       @media (max-width: 920px) {
         .hero .wrap { grid-template-columns: 1fr; }
         .hero { padding-top: 48px; }
+        .phones { --pw: min(41vw, 250px); gap: 3vw; margin-top: 8px; }
+        .hp.p-analyse { transform: translateY(18px) rotate(-2deg); }
       }
 
       /* ── ticker ─────────────────────────────────────────── */
@@ -486,13 +529,6 @@
         .stores { gap: 10px; }
         .store { flex: 1 1 150px; justify-content: center; padding: 10px 12px; }
         .trust { gap: 8px 18px; }
-        .term-top { flex-wrap: wrap; padding: 12px 14px; }
-        #tStatus { order: 3; flex-basis: 100%; font-size: 12.5px; }
-        .chart-box { height: auto; }
-        #heroChart { height: 240px; }
-        .setup { position: static; width: auto; margin: 0 12px 12px; transform: none; opacity: .35; }
-        .setup.show { opacity: 1; }
-        .term-foot { padding: 10px 14px; }
         section.block { padding-block: 72px 24px; }
         .sec-head p { font-size: 16.5px; }
         .bento { margin-top: 32px; gap: 12px; }
@@ -586,34 +622,51 @@
             </div>
           </div>
 
-          <div class="terminal reveal" aria-label="Live demo of an FxLens analysis">
-            <div class="term-top">
-              <span class="pair" id="tPair">XAU/USD</span>
-              <span id="tStatus">Reading the chart…</span>
-              <div class="tf"><span class="on">4H</span><span class="on">15M</span><span id="tfExtra">+1H</span></div>
-            </div>
-            <div class="chart-box">
-              <canvas id="heroChart" aria-hidden="true"></canvas>
-              <div class="setup" id="setup">
-                <div class="setup-head">
-                  <span class="p" id="sPair">XAU/USD</span>
-                  <span class="side buy" id="sSide">BUY</span>
-                  <span class="str">Strong · Scalp</span>
+          <div class="phones" aria-label="The two halves of FxLens: analyse a chart, then share it on Townhall">
+            <figure class="hp p-analyse">
+              <div class="phone-shell"><div class="phone-screen"><div class="screen-inner">
+                <div class="app-bar"><span class="app-logo"><img src="fxlens_icon.png" alt="" />FxLens</span><span class="app-chip">AI analysis</span></div>
+                <div class="terminal" aria-label="Live demo of an FxLens analysis">
+                  <div class="term-top">
+                    <span class="pair" id="tPair">XAU/USD</span>
+                    <div class="tf"><span class="on">4H</span><span class="on">15M</span><span id="tfExtra">+1H</span></div>
+                  </div>
+                  <div class="term-status"><span class="live-dot"></span><span id="tStatus">Reading the chart…</span></div>
+                  <div class="chart-box"><canvas id="heroChart" aria-hidden="true"></canvas></div>
+                  <div class="setup" id="setup">
+                    <div class="setup-head">
+                      <span class="p" id="sPair">XAU/USD</span>
+                      <span class="side buy" id="sSide">BUY</span>
+                      <span class="str">Strong · Scalp</span>
+                    </div>
+                    <div class="levels">
+                      <div><small>ENTRY</small><b class="mono" id="sEntry">4150.00</b></div>
+                      <div><small>STOP LOSS</small><b class="mono" style="color:var(--loss)" id="sSl">4140.00</b></div>
+                      <div><small>TAKE PROFIT</small><b class="mono" style="color:var(--gain)" id="sTp">4170.00</b></div>
+                      <div><small>R:R</small><b class="mono" style="color:var(--teal)" id="sRr">1:2</b></div>
+                    </div>
+                    <div class="checks"><span>✓ Levels checked</span><span>✓ R:R verified</span><span>✓ Stop sized</span></div>
+                  </div>
+                  <div class="term-foot">
+                    <span>Analysing</span>
+                    <div class="bar"><i id="tBar"></i></div>
+                    <span class="timer" id="tTimer">0.0s</span>
+                  </div>
                 </div>
-                <div class="levels">
-                  <div><small>ENTRY</small><b class="mono" id="sEntry">4150.00</b></div>
-                  <div><small>STOP LOSS</small><b class="mono" style="color:var(--loss)" id="sSl">4140.00</b></div>
-                  <div><small>TAKE PROFIT</small><b class="mono" style="color:var(--gain)" id="sTp">4170.00</b></div>
-                  <div><small>R:R</small><b class="mono" style="color:var(--teal)" id="sRr">1:2</b></div>
+              </div></div></div>
+              <figcaption><span class="step-n">1</span><b>Analyse</b> Drop a chart, get the setup</figcaption>
+            </figure>
+            <figure class="hp p-townhall">
+              <div class="phone-shell"><div class="phone-screen">
+                <div class="screen-inner th-inner">
+                  <div class="app-bar"><span class="app-logo"><img src="fxlens_icon.png" alt="" />Townhall</span><span class="app-chip live"><i></i>Live</span></div>
+                  <iframe id="thFrame" title="Live Townhall feed" loading="lazy" referrerpolicy="no-referrer"
+                    sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+                    data-src="https://townhall.fxlens.app/?embed=1"></iframe>
                 </div>
-                <div class="checks"><span>✓ Levels checked</span><span>✓ R:R verified</span><span>✓ Stop sized</span></div>
-              </div>
-            </div>
-            <div class="term-foot">
-              <span>Analysing</span>
-              <div class="bar"><i id="tBar"></i></div>
-              <span class="timer" id="tTimer">0.0s</span>
-            </div>
+              </div></div>
+              <figcaption><span class="step-n">2</span><b>Townhall</b> Make the call, prove it live</figcaption>
+            </figure>
           </div>
         </div>
       </section>
@@ -847,7 +900,10 @@
           return out;
         }
         function sizeCanvas(cv) {
-          const r = cv.getBoundingClientRect(), d = Math.min(window.devicePixelRatio || 1, 2);
+          // Layout size (offsetWidth), not the on-screen size: the hero phones are
+          // CSS-scaled, and drawing must happen in their unscaled coordinates.
+          const r = { width: cv.offsetWidth || cv.getBoundingClientRect().width, height: cv.offsetHeight || cv.getBoundingClientRect().height };
+          const d = Math.min(window.devicePixelRatio || 1, 2) * 1.5;
           cv.width = Math.max(1, r.width * d); cv.height = Math.max(1, r.height * d);
           const ctx = cv.getContext("2d"); ctx.setTransform(d, 0, 0, d, 0, 0); return { ctx, w: r.width, h: r.height };
         }
@@ -866,6 +922,23 @@
             ctx.fillRect(x - cw * 0.3, Math.min(y(d.o), y(d.c)), cw * 0.6, Math.max(1, Math.abs(y(d.o) - y(d.c))));
           });
         });
+
+        // ── hero phones: scale the 360×760 screens to each frame, load the
+        //    live Townhall only when the phones are near the viewport ─────
+        const fitScreens = () => document.querySelectorAll(".phone-screen").forEach((scr) => {
+          const inner = scr.querySelector(".screen-inner");
+          if (inner) inner.style.setProperty("--k", String(scr.clientWidth / 360));
+        });
+        fitScreens();
+        window.addEventListener("resize", fitScreens);
+        const thFrame = document.getElementById("thFrame");
+        if (thFrame) {
+          const loadTh = () => { if (!thFrame.src) thFrame.src = thFrame.dataset.src; };
+          if ("IntersectionObserver" in window) {
+            const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { loadTh(); io.disconnect(); } }, { rootMargin: "200px" });
+            io.observe(thFrame);
+          } else loadTh();
+        }
 
         // ── hero: live analysis loop ────────────────────────
         const cv = document.getElementById("heroChart");
