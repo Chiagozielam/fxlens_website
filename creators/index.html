@@ -29,201 +29,154 @@
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <meta name="theme-color" content="#000000" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet" />
   <style>
-    :root { --ink:#000; --panel:#0c0c0d; --panel-2:#121214; --line:#1f1f1f; --line-2:#2a2a2a; --text:#f5f5f5; --dim:#a8a8a8; --faint:#737373; --teal:#2dd4bf; --gain:#34d399; --gold:#f4c45a;
-      --display:"Unbounded","Arial Black",system-ui,sans-serif; --body:"Manrope","Segoe UI",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace; color-scheme:dark; }
+    :root{--ink:#07110e;--panel:#0d1a16;--panel2:#11211c;--line:#1c2d27;--text:#f2f5f0;--dim:#9fb0a8;--faint:#6d7f77;--gold:#f5c451;--mint:#3ee6b0;
+      --display:"Bricolage Grotesque",system-ui,sans-serif;--body:"DM Sans",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;color-scheme:dark}
     *,*::before,*::after{box-sizing:border-box} html{scroll-behavior:smooth}
     body{margin:0;background:var(--ink);color:var(--text);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:clip}
-    a{color:inherit} img{max-width:100%;display:block}
-    .wrap{max-width:1100px;margin:0 auto;padding-inline:max(20px,env(safe-area-inset-left))}
-    .nav{position:sticky;top:0;z-index:10;background:rgba(0,0,0,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-    .nav .wrap{display:flex;align-items:center;gap:20px;height:64px}
-    .brand{display:flex;align-items:center;gap:10px;font:800 18px var(--display);text-decoration:none}
-    .brand img{width:30px;height:30px;border-radius:8px}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;background:var(--teal);color:#032623;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-size:15px}
-    .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line-2)}
-    .nav .btn{margin-left:auto;padding:9px 16px;font-size:14px}
-    .hero{position:relative;padding-block:88px 56px;overflow:hidden}
-    .hero::before{content:"";position:absolute;inset:-30% 0 auto;height:700px;z-index:-1;background:radial-gradient(600px 360px at 70% 30%,rgba(45,212,191,.16),transparent 70%)}
-    .eyebrow{font:600 12.5px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
-    h1{margin:16px 0 0;font:800 clamp(36px,6vw,68px)/1.02 var(--display);letter-spacing:-.03em;max-width:15ch;text-wrap:balance}
-    h1 .accent{color:var(--teal)}
-    .lede{margin:22px 0 0;color:var(--dim);font-size:18.5px;max-width:38em}
-    .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:48px}
-    .stat{padding:18px;border-radius:18px;background:var(--panel);border:1px solid var(--line)}
-    .stat b{display:block;font:700 26px var(--mono);color:var(--text)}
-    .stat span{color:var(--dim);font-size:13.5px}
-    section.block{padding-block:72px 16px}
-    h2{margin:10px 0 0;font:800 clamp(26px,3.6vw,40px)/1.1 var(--display);letter-spacing:-.02em;text-wrap:balance}
-    .sub{color:var(--dim);max-width:40em;margin:14px 0 0}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}
-    .card{padding:22px;border-radius:20px;background:linear-gradient(180deg,var(--panel-2),var(--panel));border:1px solid var(--line-2)}
-    .card h3{margin:12px 0 6px;font-size:18px}
-    .card p{margin:0;color:var(--dim);font-size:15px}
-    .tag{display:inline-block;font:700 11px var(--mono);letter-spacing:.06em;color:var(--teal);background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.3);padding:3px 8px;border-radius:999px}
-    .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px}
-    .fit ul{margin:12px 0 0;padding-left:18px;color:var(--dim)} .fit li{margin:6px 0}
-    .contact{margin:72px 0 40px;padding:36px;border-radius:24px;border:1px solid rgba(45,212,191,.4);background:radial-gradient(500px 220px at 85% 0%,rgba(45,212,191,.16),transparent 70%),var(--panel)}
-    .contact .mail{font:700 clamp(18px,2.6vw,26px) var(--mono);color:var(--teal);word-break:break-all}
-    .contact ol{color:var(--dim);padding-left:18px} .contact li{margin:6px 0}
-    footer{border-top:1px solid var(--line);padding-block:28px;color:var(--faint);font-size:13px}
-    footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
-    footer nav{display:flex;flex-wrap:wrap;gap:16px} footer a{color:var(--dim);text-decoration:none}
-    :focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:6px}
-    @media (max-width:900px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.fit{grid-template-columns:1fr}}
-    @media (max-width:520px){.hero{padding-block:56px 32px}.lede{font-size:16.5px}.contact{padding:24px}}
-  
-    .steps{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin-top:28px;counter-reset:s}
-    .step{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}
-    .step::before{counter-increment:s;content:counter(s);display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(45,212,191,.12);color:var(--teal);font:700 14px var(--mono)}
-    .step h3{margin:12px 0 6px;font-size:18px} .step p{margin:0;color:var(--dim);font-size:15px}
-    .math{margin-top:28px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;overflow-x:auto}
-    .math table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;min-width:420px}
-    .math th,.math td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);font-size:15px}
-    .math th{color:var(--faint);font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase}
-    .math td b{font:700 16px var(--mono);color:var(--gain)}
-    .note{color:var(--faint);font-size:13px;margin-top:12px}
-    form.apply{display:grid;gap:14px;margin-top:24px;max-width:640px}
-    .row2{display:grid;gap:14px;grid-template-columns:1fr 1fr} @media (max-width:560px){.row2{grid-template-columns:1fr}}
-    label{display:grid;gap:6px;font-size:14px;font-weight:600;color:var(--dim)}
-    input,select,textarea{font:16px var(--body);color:var(--text);background:var(--panel-2);border:1px solid var(--line-2);border-radius:12px;padding:12px 14px;width:100%}
-    input:focus,select:focus,textarea:focus,.btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+    a{color:inherit;text-decoration:none} img{max-width:100%;display:block}
+    .wrap{max-width:1140px;margin:0 auto;padding-inline:20px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:14px;background:var(--gold);color:#1c1503;font-weight:700;border:0;cursor:pointer;font-size:16px;font-family:var(--body);transition:transform .15s}
+    .btn:hover{transform:translateY(-2px)} .btn:focus-visible,a:focus-visible,input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:2px}
+    .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+    .nav{position:sticky;top:0;z-index:20;background:rgba(7,17,14,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+    .nav .wrap{display:flex;align-items:center;height:64px;gap:16px}
+    .brand{display:flex;align-items:center;gap:10px;font:800 19px var(--display)} .brand img{width:30px;height:30px;border-radius:8px}
+    .pill{font:600 12px var(--body);color:var(--gold);border:1px solid rgba(245,196,81,.35);background:rgba(245,196,81,.08);padding:4px 10px;border-radius:999px}
+    .nav .btn{margin-left:auto;padding:9px 16px;font-size:14px;border-radius:11px}
+    h1,h2{font-family:var(--display);font-weight:800;letter-spacing:-.02em;text-wrap:balance;margin:0}
+    h1{font-size:clamp(40px,6.4vw,76px);line-height:.98}
+    h1 em{font-style:normal;color:var(--gold)}
+    h2{font-size:clamp(28px,4vw,44px);line-height:1.05}
+    .eyebrow{font:700 12px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--mint)}
+    .hero{padding-block:56px 72px}
+    .hero .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+    .lede{color:var(--dim);font-size:19px;max-width:28em;margin:20px 0 30px}
+    .ctas{display:flex;gap:12px;flex-wrap:wrap}
+    .photo{position:relative;aspect-ratio:4/5;border-radius:28px;overflow:hidden;background:radial-gradient(80% 60% at 60% 30%,#1f4a3d,transparent),linear-gradient(160deg,#143029,#0a1612)}
+    .photo img{width:100%;height:100%;object-fit:cover}
+    .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(7,17,14,.75))}
+    .toast{position:absolute;z-index:2;display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:16px;background:rgba(13,26,22,.88);backdrop-filter:blur(10px);border:1px solid var(--line);box-shadow:0 18px 40px -12px rgba(0,0,0,.7);animation:pop .7s cubic-bezier(.2,.9,.3,1.3) both}
+    .toast .ic{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:rgba(245,196,81,.15);color:var(--gold)}
+    .toast b{display:block;font:700 16px var(--mono);color:var(--mint)} .toast span{font-size:12.5px;color:var(--dim)}
+    .t1{left:-18px;top:18%;animation-delay:.4s} .t2{right:-14px;top:46%;animation-delay:.8s} .t3{left:8%;bottom:6%;animation-delay:1.2s}
+    @keyframes pop{from{opacity:0;transform:translateY(14px) scale(.9)}}
+    .perks{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .perk{display:flex;gap:14px;align-items:flex-start;padding:22px;border-radius:20px;background:var(--panel);border:1px solid var(--line)}
+    .perk .ic{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:13px;background:rgba(62,230,176,.1);color:var(--mint)}
+    .perk b{display:block;font:800 22px var(--display)} .perk span{color:var(--dim);font-size:14.5px}
+    section.block{padding-block:72px}
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:32px}
+    .step{padding:22px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),transparent)}
+    .step .ic{color:var(--gold)} .step h3{margin:14px 0 4px;font:700 18px var(--display)} .step p{margin:0;color:var(--dim);font-size:14.5px}
+    .calc{margin-top:32px;display:grid;grid-template-columns:1.1fr .9fr;gap:20px;padding:26px;border-radius:24px;background:var(--panel);border:1px solid var(--line)}
+    .calc label{display:grid;gap:8px;color:var(--dim);font-weight:500}
+    .calc output{font:700 22px var(--mono);color:var(--text)}
+    input[type=range]{accent-color:var(--gold);width:100%}
+    .big{padding:22px;border-radius:18px;background:var(--panel2);border:1px solid var(--line);display:grid;align-content:center}
+    .big b{font:700 clamp(34px,5vw,48px)/1 var(--mono);color:var(--gold)} .big span{color:var(--faint);font-size:13.5px;margin-top:8px}
+    .note{color:var(--faint);font-size:12.5px;margin:0}
+    details{border-bottom:1px solid var(--line);padding:18px 0}
+    summary{cursor:pointer;font:700 17px var(--display);list-style:none;display:flex;justify-content:space-between;gap:16px}
+    summary::after{content:"+";color:var(--gold);font:700 20px var(--mono)} details[open] summary::after{content:"–"}
+    details p{margin:8px 0 0;color:var(--dim)}
+    .faqgrid{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px}
+    .applybox{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;padding:36px;border-radius:28px;background:linear-gradient(160deg,#10251e,#0b1814);border:1px solid #1f3a30}
+    form.apply{display:grid;gap:14px}
+    .row2{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+    label{display:grid;gap:6px;font-size:14px;font-weight:500;color:var(--dim)}
+    input,select,textarea{font:16px var(--body);color:var(--text);background:rgba(7,17,14,.6);border:1px solid var(--line);border-radius:12px;padding:12px 14px;width:100%}
     textarea{min-height:96px;resize:vertical}
-    .ok{display:none;padding:18px;border-radius:14px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.35);color:var(--gain);font-weight:600}
-    .err{display:none;color:#f87171;font-size:14px}
-    .hp{position:absolute;left:-9999px}
-    .hero .wrap{display:grid;gap:48px;grid-template-columns:1.15fr .85fr;align-items:center}
-    @media (max-width:900px){.hero .wrap{grid-template-columns:1fr}}
-    .ecard{position:relative;background:linear-gradient(160deg,#101615,#0b0d0d);border:1px solid #1d2b29;border-radius:24px;padding:22px;box-shadow:0 30px 80px -30px rgba(45,212,191,.35)}
-    .ecard .top{display:flex;justify-content:space-between;align-items:center;color:var(--dim);font-size:13px}
-    .code{font:700 13px var(--mono);letter-spacing:.08em;color:var(--teal);background:rgba(45,212,191,.1);border:1px dashed rgba(45,212,191,.5);padding:5px 10px;border-radius:8px}
-    .ecard .big{margin-top:18px;font:700 44px/1 var(--mono);color:var(--text)} .ecard .big small{font-size:15px;color:var(--gain);margin-left:8px}
-    .ecard .lbl{color:var(--faint);font-size:13px;margin-top:6px}
-    .bars{display:flex;align-items:flex-end;gap:6px;height:84px;margin-top:20px}
-    .bars i{flex:1;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,var(--teal),rgba(45,212,191,.25));transform-origin:bottom;animation:grow .9s cubic-bezier(.2,.8,.2,1) both}
-    @keyframes grow{from{transform:scaleY(0)}}
-    .feed{margin-top:18px;display:grid;gap:8px}
-    .feed div{display:flex;justify-content:space-between;font-size:13.5px;padding:9px 12px;border-radius:10px;background:#0f1312;border:1px solid var(--line)}
-    .feed b{color:var(--gain);font:700 13.5px var(--mono)}
-    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
-    .chips span{font-size:13px;color:var(--dim);border:1px solid var(--line-2);border-radius:999px;padding:6px 12px}
-    .calc{margin-top:28px;display:grid;gap:24px;grid-template-columns:1fr 1fr;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:26px}
-    @media (max-width:760px){.calc{grid-template-columns:1fr}}
-    .calc label{color:var(--dim)} .calc output{font:700 22px var(--mono);color:var(--text)}
-    input[type=range]{accent-color:var(--teal);padding:0;background:none;border:0;height:28px}
-    .res{display:grid;gap:12px;align-content:center}
-    .res div{background:#0f1312;border:1px solid var(--line);border-radius:14px;padding:16px}
-    .res b{display:block;font:700 32px var(--mono);color:var(--gain)} .res span{color:var(--faint);font-size:13px}
-    .proof{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-top:28px}
-    .proof div{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}
-    .proof b{display:block;font:700 28px var(--mono)} .proof span{color:var(--dim);font-size:14px}
-    details{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:10px}
-    summary{cursor:pointer;font-weight:700;list-style:none} summary::after{content:"+";float:right;color:var(--teal);font:700 18px var(--mono)}
-    details[open] summary::after{content:"–"} details p{margin:10px 0 0;color:var(--dim)}
-    .sticky{position:fixed;left:16px;right:16px;bottom:14px;z-index:20;display:none;justify-content:center}
-    @media (max-width:700px){.sticky{display:flex}.sticky .btn{width:100%;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.6)}}
-    @media (prefers-reduced-motion:reduce){.bars i{animation:none}}
-
+    .ok{display:none;padding:18px;border-radius:14px;background:rgba(62,230,176,.1);border:1px solid rgba(62,230,176,.35);color:var(--mint);font-weight:600}
+    .err{display:none;color:#f87171;font-size:14px} .hp{position:absolute;left:-9999px}
+    .sticky{position:fixed;left:16px;right:16px;bottom:14px;z-index:30;display:none}
+    footer{margin-top:80px;border-top:1px solid var(--line);background:#050c0a}
+    .fgrid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:32px;padding-block:56px 36px}
+    .fgrid h4{margin:0 0 14px;font:700 13px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+    .fgrid ul{list-style:none;margin:0;padding:0;display:grid;gap:10px} .fgrid li a{color:var(--dim)} .fgrid li a:hover{color:var(--text)}
+    .fabout p{color:var(--dim);font-size:14.5px;max-width:30ch;margin:14px 0 18px}
+    .social{display:flex;gap:10px} .social a{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;border:1px solid var(--line);color:var(--text)} .social a:hover{border-color:var(--gold);color:var(--gold)}
+    .stores{display:flex;gap:10px;flex-wrap:wrap} .stores a{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:12px;border:1px solid var(--line);font-size:14px;font-weight:600}
+    .fbase{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:22px;border-top:1px solid var(--line);color:var(--faint);font-size:13px}
+    @media (max-width:900px){.hero .wrap,.calc,.faqgrid,.applybox{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}.perks{grid-template-columns:1fr}.fgrid{grid-template-columns:1fr 1fr}.t1{left:8px}.t2{right:8px}}
+    @media (max-width:560px){.row2,.steps{grid-template-columns:1fr}.applybox{padding:22px}.sticky{display:block}.sticky .btn{width:100%;justify-content:center}.nav .pill{display:none}.fabout{grid-column:1/-1}}
+    @media (prefers-reduced-motion:reduce){.toast{animation:none}.btn{transition:none}}
   </style>
 </head>
 <body>
   <header class="nav"><div class="wrap">
-    <a class="brand" href="/"><img src="/fxlens_icon.png" alt="" />FxLens</a>
+    <a class="brand" href="/"><img src="/fxlens_icon.png" alt="" />FxLens</a><span class="pill">Creators</span>
     <a class="btn" href="#apply">Apply</a>
   </div></header>
   <main>
     <section class="hero"><div class="wrap">
       <div>
-      <span class="eyebrow">FxLens Creators</span>
-      <h1>Your audience trades. <span class="accent">Get paid when they level up.</span></h1>
-      <p class="lede">Share your own FxLens code with your followers. They get a discount on their first month, and you earn 20% of every subscription payment they make for 12 months. No upfront posting fees, no fake hype: just a tool your audience will actually use.</p>
-      <div class="cta-row">
-        <a class="btn" href="#apply">Apply to be a creator</a>
-        <a class="btn ghost" href="#how">How it works</a>
+        <span class="eyebrow">FxLens Creator Program</span>
+        <h1 style="margin-top:14px">Talk trading.<br><em>Get paid monthly.</em></h1>
+        <p class="lede">Share your code. Your followers save on their first month. You earn 20% of every payment for a year.</p>
+        <div class="ctas"><a class="btn" href="#apply">Apply now →</a><a class="btn ghost" href="#calc">Estimate earnings</a></div>
       </div>
-      <div class="stats">
-        <div class="stat"><b>20%</b><span>of every payment from your followers</span></div>
-        <div class="stat"><b>12 months</b><span>of earnings per subscriber</span></div>
-        <div class="stat"><b>Live</b><span>signups and earnings in the app</span></div>
-        <div class="stat"><b>Monthly</b><span>payouts</span></div>
-      </div>
-      <div class="chips"><span>YouTube</span><span>TikTok</span><span>Instagram</span><span>X</span><span>Telegram</span><span>WhatsApp channels</span></div>
-      </div>
-      <div class="ecard" aria-label="Example creator earnings card">
-        <div class="top"><span>Your creator code</span><span class="code">MIKE10</span></div>
-        <div class="big">$252<small>this month</small></div>
-        <div class="lbl">Example: 100 followers on the Monthly plan</div>
-        <div class="bars" aria-hidden="true"><i style="height:22%;animation-delay:.05s"></i><i style="height:30%;animation-delay:.1s"></i><i style="height:38%;animation-delay:.15s"></i><i style="height:47%;animation-delay:.2s"></i><i style="height:58%;animation-delay:.25s"></i><i style="height:66%;animation-delay:.3s"></i><i style="height:80%;animation-delay:.35s"></i><i style="height:100%;animation-delay:.4s"></i></div>
-        <div class="feed"><div><span>New subscriber · Lagos</span><b>+$2.52</b></div><div><span>Renewal · Johannesburg</span><b>+$2.52</b></div><div><span>New subscriber · Nairobi</span><b>+$2.52</b></div></div>
+      <div class="photo">
+        <img src="/creators/hero.jpg" alt="A smiling creator pointing at his phone" onerror="this.remove()" />
+        <div class="toast t1"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .8-3 2s1.3 1.7 3 2 3 .8 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6.5v11"/></svg></div><div><b>+$2.52</b><span>New subscriber · Lagos</span></div></div>
+        <div class="toast t2"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .8-3 2s1.3 1.7 3 2 3 .8 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6.5v11"/></svg></div><div><b>+$2.52</b><span>Renewal · Johannesburg</span></div></div>
+        <div class="toast t3"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></div><div><b>$252</b><span>This month · code MIKE10</span></div></div>
       </div>
     </div></section>
 
-    <section class="block" id="how"><div class="wrap">
+    <section><div class="wrap perks">
+      <div class="perk"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .8-3 2s1.3 1.7 3 2 3 .8 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6.5v11"/></svg></div><div><b>20%</b><span>of every payment</span></div></div>
+      <div class="perk"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18"/></svg></div><div><b>12 months</b><span>per subscriber</span></div></div>
+      <div class="perk"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></div><div><b>Live stats</b><span>right in the app</span></div></div>
+    </div></section>
+
+    <section class="block"><div class="wrap">
       <span class="eyebrow">How it works</span>
-      <h2>From application to first payout.</h2>
+      <h2 style="margin-top:10px">Four steps. No quotas.</h2>
       <div class="steps">
-        <div class="step"><h3>Apply</h3><p>Tell us where you post and who your audience is. We reply within a few days.</p></div>
-        <div class="step"><h3>Get your code</h3><p>We create your personal code, for example <b>MIKE10</b>, with a first-month discount for your followers.</p></div>
-        <div class="step"><h3>Share FxLens your way</h3><p>Show the AI analysis on your own charts, post your Townhall calls, mention it in your lives. Your content, your style.</p></div>
-        <div class="step"><h3>Earn every month</h3><p>Every time someone who used your code pays, 20% is yours, for 12 months. Track it live in the app.</p></div>
+        <div class="step"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></svg></div><h3>Apply</h3><p>One short form.</p></div>
+        <div class="step"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg></div><h3>Get your code</h3><p>With a discount for your followers.</p></div>
+        <div class="step"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg></div><h3>Share your way</h3><p>Your content, your style.</p></div>
+        <div class="step"><div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .8-3 2s1.3 1.7 3 2 3 .8 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6.5v11"/></svg></div><h3>Earn monthly</h3><p>20% of every payment, for a year.</p></div>
       </div>
     </div></section>
 
-    <section class="block"><div class="wrap">
+    <section class="block" id="calc"><div class="wrap">
       <span class="eyebrow">Earnings calculator</span>
-      <h2>See what your audience is worth.</h2>
-      <p class="sub">Your share is 20% of what FxLens receives after app store fees, on every payment, for 12 months.</p>
+      <h2 style="margin-top:10px">What could you earn?</h2>
       <div class="calc">
-        <div style="display:grid;gap:22px">
+        <div style="display:grid;gap:22px;align-content:center">
           <label>Followers who subscribe <output id="nOut">100</output><input id="n" type="range" min="5" max="1000" step="5" value="100" /></label>
-          <label>Months they stay subscribed <output id="mOut">3</output><input id="m" type="range" min="1" max="12" step="1" value="3" /></label>
-          <p class="note" style="margin:0">Based on the $17.99 Monthly plan. Store prices vary by country. An example, not a promise.</p>
+          <label>Months they stay <output id="mOut">3</output><input id="m" type="range" min="1" max="12" value="3" /></label>
+          <p class="note">Based on the $17.99 Monthly plan after store fees. Prices vary by country. An estimate, not a promise.</p>
         </div>
-        <div class="res">
-          <div><b id="perMonth">$252</b><span>per month while they're subscribed</span></div>
-          <div><b id="total">$756</b><span>total from these subscribers</span></div>
+        <div style="display:grid;gap:14px">
+          <div class="big"><b id="perMonth">$252</b><span>per month</span></div>
+          <div class="big"><b id="total">$756</b><span>in total</span></div>
         </div>
       </div>
     </div></section>
 
-    <section class="block"><div class="wrap">
-      <span class="eyebrow">Why it converts</span>
-      <h2>An app your followers will actually open.</h2>
-      <div class="proof">
-        <div><b>150k+</b><span>traders have signed up</span></div>
-        <div><b>54</b><span>countries, mostly across Africa</span></div>
-        <div><b>Seconds</b><span>from chart screenshot to an AI-checked setup</span></div>
-        <div><b>Townhall</b><span>a live trader community to post your calls in</span></div>
+    <section class="block"><div class="wrap faqgrid">
+      <div><span class="eyebrow">FAQ</span><h2 style="margin-top:10px">Quick answers.</h2></div>
+      <div>
+        <details><summary>Do I need a big following?</summary><p>No. Small, engaged audiences often convert best.</p></details>
+        <details><summary>Do I have to post a set amount?</summary><p>No quotas, no scripts. Share it when it fits your content.</p></details>
+        <details><summary>How do I track earnings?</summary><p>Signups, payments and earnings show live in the FxLens app.</p></details>
+        <details><summary>What do my followers get?</summary><p>A first-month discount when they use your code.</p></details>
       </div>
     </div></section>
 
-    <section class="block"><div class="wrap">
-      <span class="eyebrow">Fit</span>
-      <h2>Who we're looking for.</h2>
-      <div class="fit">
-        <div class="card"><h3>A good fit</h3><ul><li>Forex, gold or indices traders who post regularly</li><li>YouTube, TikTok, Instagram, X, Telegram or WhatsApp channels</li><li>Educators and community leads</li><li>Small but engaged audiences welcome</li></ul></div>
-      </div>
-    </div></section>
-
-    <section class="block"><div class="wrap">
-      <span class="eyebrow">Questions</span>
-      <h2>Good to know.</h2>
-      <details><summary>Do I need a big following?</summary><p>No. Small, engaged audiences often convert better than big ones. If your followers trust you about trading, apply.</p></details>
-      <details><summary>Do I have to post a set number of times?</summary><p>No quotas and no scripts. Share FxLens when it fits your content. We can send ideas and assets if you want them.</p></details>
-      <details><summary>How do I see what I've earned?</summary><p>Your code's signups, payments and earnings show live inside the FxLens app.</p></details>
-      <details><summary>What do my followers get?</summary><p>A discount on their first month when they use your code. We agree the exact discount with you.</p></details>
-      <details><summary>What can't I say?</summary><p>No guaranteed profits, no "get rich" claims and no fake results. Trading carries risk, and good creators say so.</p></details>
-    </div></section>
-
-    <section id="apply"><div class="wrap">
-      <div class="contact">
-        <span class="eyebrow">Apply</span>
-        <h2>Become an FxLens creator.</h2>
-        <p class="sub">Takes about a minute. We review every application by hand.</p>
-        <form class="apply" name="creator-apply" method="POST" data-netlify="true" netlify-honeypot="company">
-          <input type="hidden" name="form-name" value="creator-apply" />
+    <section class="block" id="apply"><div class="wrap">
+      <div class="applybox">
+        <div>
+          <span class="eyebrow">Apply</span>
+          <h2 style="margin-top:10px">Join the program.</h2>
+          <p style="color:var(--dim);margin-top:14px">Takes a minute. We reply by email within a few days.</p>
+        </div>
+        <div>
+        <form class="apply" name="creator-apply">
           <p class="hp"><label>Leave empty <input name="company" tabindex="-1" autocomplete="off" /></label></p>
           <div class="row2">
             <label>Name<input name="name" required autocomplete="name" /></label>
@@ -251,30 +204,37 @@
           <p class="err" id="err">Something went wrong. Check your connection and try again.</p>
           <div><button class="btn" type="submit">Send application</button></div>
         </form>
-        <p class="ok" id="ok" role="status">Application sent. We'll get back to you by email within a few days.</p>
+          <p class="ok" id="ok" role="status">Application sent. We'll be in touch by email.</p>
+        </div>
       </div>
     </div></section>
   </main>
+
   <footer><div class="wrap">
-    <a class="brand" href="/"><img src="/fxlens_icon.png" alt="" />FxLens</a>
-    <nav><a href="/">Home</a><a href="/partners">Advertise</a><a href="/support.html">Support</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav>
-    <span>© 2026 FxLens Technologies.</span>
+    <div class="fgrid">
+      <div class="fabout">
+        <a class="brand" href="/"><img src="/fxlens_icon.png" alt="" />FxLens</a>
+        <p>AI chart analysis and Townhall, the community where traders share their calls.</p>
+        <div class="social"><a href="https://www.tiktok.com/@fxlens" aria-label="FxLens on TikTok" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.2v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.6a5.8 5.8 0 1 0 5 5.8V9.1a7.4 7.4 0 0 0 4.3 1.4V7.3a4.3 4.3 0 0 1-3.2-1.5z"/></svg></a></div>
+      </div>
+      <div><h4>Get the app</h4><div class="stores" style="flex-direction:column;align-items:flex-start">
+        <a href="https://apps.apple.com/app/id6748287547"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.5 2.1-3.7 2.2-3.8-1.2-1.7-3-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.2zM13.9 5.1c.7-.9 1.2-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg> App Store</a>
+        <a href="https://play.google.com/store/apps/details?id=com.danieldon.fxlens"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M4 2.5v19c0 .4.4.6.7.4L15.5 12 4.7 2.1c-.3-.2-.7 0-.7.4zM16.9 10.6 7 4.8l9.1 6.4zm0 2.8L7 19.2l9.1-6.4zm3.5-2.2-2.4-1.4-1.7 2.2 1.7 2.2 2.4-1.4c.8-.5.8-1.1 0-1.6z"/></svg> Google Play</a></div></div>
+      <div><h4>Company</h4><ul><li><a href="/careers">Careers</a></li><li><a href="/partners">Advertise with us</a></li><li><a href="/creators">Creators</a></li><li><a href="/results">Results</a></li></ul></div>
+      <div><h4>Help</h4><ul><li><a href="/support.html">Support</a></li><li><a href="/townhall-rules">Townhall rules</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/terms">Terms</a></li></ul></div>
+    </div>
+    <div class="fbase"><span>© 2026 FxLens Technologies.</span><span>Trading involves risk. Earnings examples are estimates. Photo: <a href="https://unsplash.com/@wakkypaul" target="_blank" rel="noopener">@wakkypaul</a> on Unsplash.</span></div>
   </div></footer>
-  <div class="sticky"><a class="btn" href="#apply">Apply to be a creator</a></div>
+  <div class="sticky"><a class="btn" href="#apply">Apply now →</a></div>
   <script>
     const n=document.getElementById("n"),m=document.getElementById("m"),usd=v=>"$"+Math.round(v).toLocaleString("en-US");
     const calc=()=>{const per=n.value*17.99*0.7*0.2;nOut.textContent=n.value;mOut.textContent=m.value;perMonth.textContent=usd(per);total.textContent=usd(per*m.value);};
     n.oninput=m.oninput=calc;calc();
-    const f = document.querySelector("form.apply");
-    f.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const btn = f.querySelector("button"); btn.disabled = true; btn.textContent = "Sending…";
-      try {
-        const r = await fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(new FormData(f)).toString() });
-        if (!r.ok) throw new Error(r.status);
-        f.style.display = "none"; document.getElementById("ok").style.display = "block";
-      } catch { document.getElementById("err").style.display = "block"; btn.disabled = false; btn.textContent = "Send application"; }
-    });
+    const f=document.querySelector("form.apply");
+    f.addEventListener("submit",async(e)=>{e.preventDefault();const b=f.querySelector("button");b.disabled=true;b.textContent="Sending…";
+      try{const r=await fetch("/api/creator-apply",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.fromEntries(new FormData(f)))});
+        const j=await r.json().catch(()=>({}));if(!r.ok||!j.success)throw new Error(j.error||"");f.style.display="none";ok.style.display="block";}
+      catch(x){err.textContent=x.message||"Something went wrong. Check your connection and try again.";err.style.display="block";b.disabled=false;b.textContent="Send application";}});
   </script>
 </body>
 </html>
