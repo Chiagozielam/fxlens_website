@@ -8,5 +8,6 @@
 /api/profile/*  https://api.fxlens.app/api/public/profile/:splat  200
 /api/creator-apply  https://api.fxlens.app/api/public/creator-apply  200
 /api/townhall/*  https://api.fxlens.app/api/public/townhall/:splat  200
+/to/*  /to/index.html  200
 /t/*  /t/index.html  200
 /@*  /u/index.html  200

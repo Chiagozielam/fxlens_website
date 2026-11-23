@@ -5,6 +5,7 @@
         "appIDs": ["632X957SR8.com.danieldon.fxlens"],
         "components": [
           { "/": "/t/*", "comment": "Townhall posts" },
+          { "/": "/to/*", "comment": "Open a screen in the app (email buttons)" },
           { "/": "/@*", "comment": "Trader profiles" }
         ]
       }
