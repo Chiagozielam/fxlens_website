@@ -60,6 +60,18 @@
     .stores{display:flex;gap:8px}
     .stores a{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;text-align:center;padding:9px;border-radius:10px;border:1px solid var(--line);font-size:13px;font-weight:600;text-decoration:none;color:var(--dim)}
     .share{margin-left:auto;display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--line);color:var(--dim);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer}
+    .soon{padding:16px;border-radius:16px;background:linear-gradient(135deg,rgba(45,212,191,.12),rgba(15,118,110,.06));border:1px solid rgba(45,212,191,.28);display:grid;gap:12px}
+    .soon .lbl{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)}
+    .clock{display:flex;gap:8px;font-variant-numeric:tabular-nums}
+    .clock div{min-width:62px;padding:8px 6px;border-radius:12px;background:rgba(0,0,0,.45);border:1px solid var(--line);text-align:center}
+    .clock b{display:block;font-size:26px;line-height:1.1;letter-spacing:-.02em}
+    .clock span{font-size:10.5px;color:var(--mute);text-transform:uppercase;letter-spacing:.08em}
+    .when{font-size:13.5px;color:var(--dim)}
+    .acts{display:flex;gap:8px;flex-wrap:wrap}
+    .act{display:inline-flex;align-items:center;gap:7px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font:600 13.5px/1 inherit;text-decoration:none;cursor:pointer}
+    .act.primary{background:var(--teal);border-color:var(--teal);color:#04211e}
+    .act:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+    .menu{display:flex;gap:8px;flex-wrap:wrap}
     .notfound{max-width:420px;margin:80px auto;text-align:center;padding:0 16px}
   </style>
 </head>
@@ -77,6 +89,19 @@
           <span class="chip" id="status">Live class</span>
           <span class="watching" id="watching"></span>
           <button class="share" id="share" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span id="shareLabel">Share</span></button>
+        </div>
+        <div class="soon" id="soon" hidden>
+          <span class="lbl">Starts in</span>
+          <div class="clock" aria-live="off"><div><b id="cd_d">0</b><span>days</span></div><div><b id="cd_h">00</b><span>hrs</span></div><div><b id="cd_m">00</b><span>min</span></div><div><b id="cd_s">00</b><span>sec</span></div></div>
+          <div class="when" id="when"></div>
+          <div class="acts">
+            <button class="act primary" id="calBtn" type="button" aria-expanded="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Add to calendar</button>
+            <a class="act" id="remindApp" href="#"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg>Get a reminder in the app</a>
+          </div>
+          <div class="menu" id="calMenu" hidden>
+            <a class="act" id="calGoogle" target="_blank" rel="noopener">Google Calendar</a>
+            <a class="act" id="calIcs">Apple / Outlook</a>
+          </div>
         </div>
         <h1 id="title"></h1>
         <p class="desc" id="desc" hidden></p>
@@ -171,8 +196,9 @@
       var st = $("status");
       var live = s.status === "live", ended = s.status === "ended";
       st.className = "chip" + (live ? " live" : "");
-      st.innerHTML = live ? '<span class="dot"></span>Live' : ended ? "Replay" : "Starts in " + (until(s.startsAt) || "a moment");
-      $("watching").textContent = live && s.viewers ? s.viewers.toLocaleString() + " watching" : !live && !ended ? new Date(s.startsAt).toLocaleString([], { weekday: "short", hour: "2-digit", minute: "2-digit" }) : "";
+      // Upcoming: the countdown card says when, so the chip just says "Upcoming".
+      st.innerHTML = live ? '<span class="dot"></span>Live' : ended ? "Replay" : "Upcoming";
+      $("watching").textContent = live && s.viewers ? s.viewers.toLocaleString() + " watching" : "";
 
       var vid = ytId(ended && s.replayUrl ? s.replayUrl : s.watchUrl);
       if (vid && vid !== shownVideo) {
@@ -181,6 +207,10 @@
       } else if (!vid) {
         $("empty").textContent = "The stream link will appear here when the class starts.";
       }
+
+      var upcoming = s.status === "scheduled" && Date.parse(s.startsAt) > Date.now();
+      $("soon").hidden = !upcoming;
+      if (upcoming) setupCalendar(s);
 
       if (s.pinned && s.pinned.text) { $("pinned").hidden = false; $("pinnedText").textContent = s.pinned.text; } else { $("pinned").hidden = true; }
 
@@ -198,6 +228,43 @@
         lastMsgId = newest;
       }
     }
+
+
+    // ── Upcoming: countdown + calendar ──
+    var cal = null, tick = null;
+    function pad(n) { return (n < 10 ? "0" : "") + n; }
+    function runClock() {
+      if (!cal) return;
+      var ms = Date.parse(cal.start) - Date.now();
+      if (ms <= 0) { $("soon").hidden = true; clearInterval(tick); tick = null; poll(); return; }
+      var s = Math.floor(ms / 1000);
+      $("cd_d").textContent = Math.floor(s / 86400);
+      $("cd_h").textContent = pad(Math.floor(s / 3600) % 24);
+      $("cd_m").textContent = pad(Math.floor(s / 60) % 60);
+      $("cd_s").textContent = pad(s % 60);
+    }
+    function stamp(iso) { return new Date(iso).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, ""); }
+    function setupCalendar(s) {
+      var start = s.startsAt;
+      var end = s.endsAt && Date.parse(s.endsAt) > Date.parse(start) ? s.endsAt : new Date(Date.parse(start) + 3600000).toISOString();
+      var link = "https://fxlens.app/to/live/" + eventId;
+      var title = s.title + " (FxLens Live)";
+      var details = "Watch free: " + link + "\nAsk questions in the FxLens app.";
+      cal = { start: start };
+      $("when").textContent = new Date(start).toLocaleString([], { weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit", timeZoneName: "short" });
+      $("calGoogle").href = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(title) + "&dates=" + stamp(start) + "/" + stamp(end) + "&details=" + encodeURIComponent(details) + "&location=" + encodeURIComponent(link);
+      var ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//FxLens//Live//EN", "BEGIN:VEVENT", "UID:" + eventId + "@fxlens.app", "DTSTAMP:" + stamp(new Date().toISOString()), "DTSTART:" + stamp(start), "DTEND:" + stamp(end),
+        "SUMMARY:" + title.replace(/[,;]/g, " "), "DESCRIPTION:" + details.replace(/\n/g, "\\n").replace(/[,;]/g, " "), "URL:" + link, "LOCATION:" + link,
+        "BEGIN:VALARM", "TRIGGER:-PT15M", "ACTION:DISPLAY", "DESCRIPTION:" + title.replace(/[,;]/g, " "), "END:VALARM", "END:VEVENT", "END:VCALENDAR"].join("\r\n");
+      $("calIcs").href = "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
+      $("calIcs").setAttribute("download", "fxlens-live.ics");
+      if (!tick) { runClock(); tick = setInterval(runClock, 1000); }
+    }
+    $("calBtn").addEventListener("click", function () {
+      var m = $("calMenu"); m.hidden = !m.hidden; $("calBtn").setAttribute("aria-expanded", String(!m.hidden));
+    });
+    $("remindApp").href = isMobile ? deep : IOS;
+    $("remindApp").addEventListener("click", function (e) { openApp.click(); e.preventDefault(); });
 
     var timer = null, failures = 0;
     function poll() {
