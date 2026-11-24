@@ -215,7 +215,7 @@
       if (s.pinned && s.pinned.text) { $("pinned").hidden = false; $("pinnedText").textContent = s.pinned.text; } else { $("pinned").hidden = true; }
 
       var msgs = s.messages || [];
-      $("chatCount").textContent = msgs.length ? msgs.length + (msgs.length >= 40 ? "+" : "") + " messages" : "";
+      $("chatCount").textContent = msgs.length ? msgs.length + (msgs.length >= 40 ? "+" : "") + (msgs.length === 1 ? " message" : " messages") : "";
       var newest = msgs.length ? msgs[msgs.length - 1].id : "";
       if (newest !== lastMsgId) {
         var box = $("msgs");
