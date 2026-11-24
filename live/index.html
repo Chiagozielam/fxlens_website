@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FxLens Live</title>
+  <meta name="description" content="Watch the FxLens live trading class free. Join the chat in the FxLens app." />
+  <meta property="og:title" content="FxLens Live class" />
+  <meta property="og:description" content="Watch free, live. Ask questions in the FxLens app." />
+  <meta property="og:image" content="https://fxlens.app/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="apple-itunes-app" content="app-id=6748287547" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <meta name="theme-color" content="#000000" />
+  <style>
+    :root{--ink:#000;--panel:#0c0c0d;--panel2:#141416;--line:#232326;--text:#f5f5f5;--dim:#a1a1aa;--mute:#71717a;--teal:#2dd4bf;--teal2:#12bfa8;--red:#ef4444}
+    *{box-sizing:border-box}
+    [hidden]{display:none!important}
+    html,body{margin:0;background:var(--ink);color:var(--text);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+    a{color:inherit}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);z-index:5}
+    .brand{display:flex;align-items:center;gap:9px;text-decoration:none;font-weight:700;letter-spacing:-.01em}
+    .brand img{width:28px;height:28px;border-radius:8px}
+    .brand span{color:var(--dim);font-weight:600}
+    .get{padding:8px 14px;border-radius:999px;background:var(--teal);color:#04211e;font-weight:700;font-size:13.5px;text-decoration:none;white-space:nowrap}
+    main{max-width:1200px;margin:0 auto;padding:16px;display:grid;gap:16px;grid-template-columns:1fr}
+    @media (min-width:960px){main{grid-template-columns:minmax(0,1fr) 360px;padding:24px}}
+    .player{position:relative;width:100%;aspect-ratio:16/9;background:#0a0a0a;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+    .player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+    .player .empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;color:var(--dim)}
+    .meta{margin-top:14px;display:grid;gap:8px}
+    .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .chip{display:inline-flex;align-items:center;gap:7px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--panel2);color:var(--dim);border:1px solid var(--line)}
+    .chip.live{background:rgba(239,68,68,.12);color:#fca5a5;border-color:rgba(239,68,68,.35)}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--red);animation:pulse 1.3s ease-in-out infinite}
+    @keyframes pulse{50%{opacity:.25}}
+    @media (prefers-reduced-motion:reduce){.dot{animation:none}}
+    .watching{color:var(--dim);font-size:13.5px;font-variant-numeric:tabular-nums}
+    h1{margin:0;font-size:clamp(20px,3.2vw,26px);line-height:1.25;letter-spacing:-.015em;text-wrap:balance}
+    .desc{margin:0;color:var(--dim);max-width:70ch}
+    .pinned{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:14px;background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.25)}
+    .pinned b{color:var(--teal);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:2px}
+    aside{background:var(--panel);border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;min-height:420px;max-height:calc(100vh - 110px);overflow:hidden}
+    @media (max-width:959px){aside{max-height:none;min-height:0}}
+    .chathead{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line);font-weight:700}
+    .chathead small{color:var(--mute);font-weight:500}
+    .msgs{flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:12px;min-height:200px;max-height:520px}
+    .msg{display:flex;gap:10px}
+    .av{width:30px;height:30px;border-radius:50%;flex:none;background:var(--panel2);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--dim);overflow:hidden}
+    .av img{width:100%;height:100%;object-fit:cover}
+    .msg .n{font-size:12.5px;font-weight:700;color:var(--dim)}
+    .msg .n i{font-style:normal;color:var(--teal);font-size:10px;margin-left:5px;letter-spacing:.06em}
+    .msg .t{font-size:14px;white-space:pre-wrap;word-wrap:break-word}
+    .quiet{color:var(--mute);font-size:13.5px;text-align:center;margin:auto 0;padding:24px 8px}
+    .join{border-top:1px solid var(--line);padding:12px 14px;display:grid;gap:8px}
+    .join p{margin:0;font-size:13px;color:var(--dim)}
+    .btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 16px;border-radius:12px;background:linear-gradient(135deg,var(--teal2),#0f766e);color:#fff;font-weight:700;text-decoration:none}
+    .btn:focus-visible,.get:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+    .stores{display:flex;gap:8px}
+    .stores a{flex:1;text-align:center;padding:9px;border-radius:10px;border:1px solid var(--line);font-size:13px;font-weight:600;text-decoration:none;color:var(--dim)}
+    .share{margin-left:auto;background:none;border:1px solid var(--line);color:var(--dim);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer}
+    .notfound{max-width:420px;margin:80px auto;text-align:center;padding:0 16px}
+  </style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="/"><img src="/fxlens_icon.png" alt="" />FxLens <span>Live</span></a>
+    <a class="get" id="getTop" href="https://apps.apple.com/app/id6748287547">Get the app</a>
+  </header>
+
+  <main id="app" hidden>
+    <section>
+      <div class="player" id="player"><div class="empty" id="empty">Loading the class…</div></div>
+      <div class="meta">
+        <div class="row">
+          <span class="chip" id="status">Live class</span>
+          <span class="watching" id="watching"></span>
+          <button class="share" id="share" type="button">Share</button>
+        </div>
+        <h1 id="title"></h1>
+        <p class="desc" id="desc" hidden></p>
+        <div class="pinned" id="pinned" hidden><div><b>Pinned</b><span id="pinnedText"></span></div></div>
+      </div>
+    </section>
+    <aside aria-label="Live chat">
+      <div class="chathead">Live chat <small id="chatCount"></small></div>
+      <div class="msgs" id="msgs"><p class="quiet">No messages yet.</p></div>
+      <div class="join">
+        <p>Ask your question and chat with the class in the free FxLens app.</p>
+        <a class="btn" id="openApp" href="#">Join the chat in the app</a>
+        <div class="stores">
+          <a href="https://apps.apple.com/app/id6748287547">App Store</a>
+          <a href="https://play.google.com/store/apps/details?id=com.danieldon.fxlens">Google Play</a>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <div class="notfound" id="notfound" hidden>
+    <h1>This class isn’t available</h1>
+    <p style="color:var(--dim)">See upcoming live classes in the FxLens app.</p>
+    <a class="btn" href="fxlens:///live-classes" style="margin-top:20px">Open Live classes in the app</a>
+    <div class="stores" style="margin-top:10px"><a href="https://apps.apple.com/app/id6748287547">App Store</a><a href="https://play.google.com/store/apps/details?id=com.danieldon.fxlens">Google Play</a></div>
+  </div>
+
+  <script>
+  (function () {
+    // /to/live/<eventId> (or /live/<eventId>)
+    var parts = location.pathname.split("/").filter(Boolean);
+    var eventId = parts[parts.length - 1] || "";
+    if (!/^[A-Za-z0-9]{6,36}$/.test(eventId)) {
+      // Plain fxlens.app/to/live (email buttons): the Live classes landing.
+      document.querySelector("#notfound h1").textContent = "FxLens Live classes";
+      document.querySelector("#notfound p").textContent = "Free live trading classes every week. Watch and ask questions in the FxLens app.";
+      show404();
+      setTimeout(function () { location.href = "fxlens:///live-classes"; }, 300);
+      return;
+    }
+
+    var IOS = "https://apps.apple.com/app/id6748287547";
+    var ANDROID = "https://play.google.com/store/apps/details?id=com.danieldon.fxlens";
+    var isAndroid = /android/i.test(navigator.userAgent);
+    var isMobile = /iphone|ipad|ipod|android/i.test(navigator.userAgent);
+    document.getElementById("getTop").href = isAndroid ? ANDROID : IOS;
+
+    // "Join the chat": try the app's own link, fall back to the store.
+    var deep = "fxlens:///liveRoom?eventId=" + encodeURIComponent(eventId);
+    var openApp = document.getElementById("openApp");
+    openApp.href = isMobile ? deep : IOS;
+    openApp.addEventListener("click", function (e) {
+      if (!isMobile) return;
+      e.preventDefault();
+      var t = Date.now();
+      location.href = deep;
+      setTimeout(function () { if (Date.now() - t < 1800 && !document.hidden) location.href = isAndroid ? ANDROID : IOS; }, 1200);
+    });
+
+    // One random id per browser so a viewer counts once (no sign-in).
+    var guest = "";
+    try { guest = localStorage.getItem("fx_guest") || ""; } catch (e) {}
+    if (!/^[a-z0-9]{16,40}$/.test(guest)) {
+      guest = Array.from({ length: 24 }, function () { return "abcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 36)]; }).join("");
+      try { localStorage.setItem("fx_guest", guest); } catch (e) {}
+    }
+
+    var $ = function (id) { return document.getElementById(id); };
+    var shownVideo = "";
+    var lastMsgId = null;
+
+    function ytId(url) {
+      var m = String(url || "").match(/(?:youtu\.be\/|youtube\.com\/(?:live\/|watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/);
+      return m ? m[1] : "";
+    }
+    function until(iso) {
+      var ms = Date.parse(iso) - Date.now();
+      if (!(ms > 0)) return "";
+      var m = Math.round(ms / 60000), h = Math.floor(m / 60), d = Math.floor(h / 24);
+      return d >= 1 ? d + "d " + (h % 24) + "h" : h >= 1 ? h + "h " + (m % 60) + "m" : m + "m";
+    }
+    function initials(n) { return String(n || "?").split(/\s+/).map(function (p) { return p[0] || ""; }).slice(0, 2).join("").toUpperCase(); }
+    function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+    function show404() { $("notfound").hidden = false; }
+
+    function render(s) {
+      $("app").hidden = false;
+      document.title = s.title + " · FxLens Live";
+      $("title").textContent = s.title;
+      if (s.description) { $("desc").hidden = false; $("desc").textContent = s.description; }
+
+      var st = $("status");
+      var live = s.status === "live", ended = s.status === "ended";
+      st.className = "chip" + (live ? " live" : "");
+      st.innerHTML = live ? '<span class="dot"></span>Live' : ended ? "Replay" : "Starts in " + (until(s.startsAt) || "a moment");
+      $("watching").textContent = live && s.viewers ? s.viewers.toLocaleString() + " watching" : !live && !ended ? new Date(s.startsAt).toLocaleString([], { weekday: "short", hour: "2-digit", minute: "2-digit" }) : "";
+
+      var vid = ytId(ended && s.replayUrl ? s.replayUrl : s.watchUrl);
+      if (vid && vid !== shownVideo) {
+        shownVideo = vid;
+        $("player").innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + vid + '?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1" title="' + esc(s.title) + '" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+      } else if (!vid) {
+        $("empty").textContent = "The stream link will appear here when the class starts.";
+      }
+
+      if (s.pinned && s.pinned.text) { $("pinned").hidden = false; $("pinnedText").textContent = s.pinned.text; } else { $("pinned").hidden = true; }
+
+      var msgs = s.messages || [];
+      $("chatCount").textContent = msgs.length ? msgs.length + (msgs.length >= 40 ? "+" : "") + " messages" : "";
+      var newest = msgs.length ? msgs[msgs.length - 1].id : "";
+      if (newest !== lastMsgId) {
+        var box = $("msgs");
+        var atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 60;
+        box.innerHTML = msgs.length ? msgs.map(function (m) {
+          var av = m.image ? '<img src="' + esc(m.image) + '" alt="" loading="lazy" />' : esc(initials(m.name));
+          return '<div class="msg"><div class="av">' + av + '</div><div><div class="n">' + esc(m.name) + (m.pro ? "<i>PRO</i>" : "") + '</div><div class="t">' + esc(m.text) + "</div></div></div>";
+        }).join("") : '<p class="quiet">No messages yet. Be the first: join the chat in the app.</p>';
+        if (atBottom || !lastMsgId) box.scrollTop = box.scrollHeight;
+        lastMsgId = newest;
+      }
+    }
+
+    var timer = null, failures = 0;
+    function poll() {
+      if (document.hidden) return; // a hidden tab isn't watching: don't count it
+      fetch("/api/liveweb", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ e: eventId, g: guest }) })
+        .then(function (r) { return r.json(); })
+        .then(function (s) {
+          if (!s || !s.success) { if (!shownVideo) { $("app").hidden = true; show404(); } return; }
+          failures = 0; render(s);
+        })
+        .catch(function () { failures++; });
+    }
+    poll();
+    timer = setInterval(poll, 20000);
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) poll(); });
+
+    $("share").addEventListener("click", function () {
+      var url = "https://fxlens.app/to/live/" + eventId;
+      var title = $("title").textContent || "FxLens Live";
+      if (navigator.share) { navigator.share({ title: title, text: "Watch this live trading class free:", url: url }).catch(function () {}); return; }
+      (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(function () { $("share").textContent = "Link copied"; setTimeout(function () { $("share").textContent = "Share"; }, 1800); }).catch(function () { prompt("Copy this link", url); });
+    });
+  })();
+  </script>
+</body>
+</html>

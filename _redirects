@@ -8,6 +8,11 @@
 /api/profile/*  https://api.fxlens.app/api/public/profile/:splat  200
 /api/creator-apply  https://api.fxlens.app/api/public/creator-apply  200
 /api/townhall/*  https://api.fxlens.app/api/public/townhall/:splat  200
+# Live class watch page: guests watch signed out; one POST every 20 s does the
+# viewer heartbeat + returns class state and read-only chat (backend function).
+/api/liveweb  https://687828c60018db97b32d.fra.appwrite.run/liveweb  200
+/to/live/*  /live/index.html  200
+/live/*  /live/index.html  200
 /to/*  /to/index.html  200
 /t/*  /t/index.html  200
 /@*  /u/index.html  200
