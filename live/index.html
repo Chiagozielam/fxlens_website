@@ -92,7 +92,7 @@
         </div>
         <div class="soon" id="soon" hidden>
           <span class="lbl">Starts in</span>
-          <div class="clock" aria-live="off"><div><b id="cd_d">0</b><span>days</span></div><div><b id="cd_h">00</b><span>hrs</span></div><div><b id="cd_m">00</b><span>min</span></div><div><b id="cd_s">00</b><span>sec</span></div></div>
+          <div class="clock" aria-live="off"><div id="cd_dbox"><b id="cd_d">0</b><span>days</span></div><div><b id="cd_h">00</b><span>hrs</span></div><div><b id="cd_m">00</b><span>min</span></div><div><b id="cd_s">00</b><span>sec</span></div></div>
           <div class="when" id="when"></div>
           <div class="acts">
             <button class="act primary" id="calBtn" type="button" aria-expanded="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Add to calendar</button>
@@ -239,6 +239,7 @@
       if (ms <= 0) { $("soon").hidden = true; clearInterval(tick); tick = null; poll(); return; }
       var s = Math.floor(ms / 1000);
       $("cd_d").textContent = Math.floor(s / 86400);
+      $("cd_dbox").hidden = s < 86400;
       $("cd_h").textContent = pad(Math.floor(s / 3600) % 24);
       $("cd_m").textContent = pad(Math.floor(s / 60) % 60);
       $("cd_s").textContent = pad(s % 60);
