@@ -16,3 +16,8 @@
 /to/*  /to/index.html  200
 /t/*  /t/index.html  200
 /@*  /u/index.html  200
+
+# fxlens.app/townhall → the web Townhall (keeps any path after it).
+# /townhall-rules is a different path and is not affected.
+/townhall    https://townhall.fxlens.app/        301!
+/townhall/*  https://townhall.fxlens.app/:splat  301!
